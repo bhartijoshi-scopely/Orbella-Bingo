@@ -35,7 +35,24 @@
         <div class="room-container">
             <!-- Top Bar -->
             <div class="top-bar">
-                <div class="level-badge">Lvl: 1</div>
+                <div class="profile-level-container">
+                    <div class="profile-level-section" id="profileLevelSection">
+                        <div class="profile-pic" id="profilePic">🦊</div>
+                        <div class="level-badge">Lvl: 1</div>
+                    </div>
+                    
+                    <!-- Profile Selector Dropdown -->
+                    <div class="profile-dropdown hidden" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <span>Choose Your Avatar</span>
+                            <button class="dropdown-close" id="profileDropdownClose">✕</button>
+                        </div>
+                        <div class="profile-grid" id="profileGrid">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="currency-display">
                     <div class="currency-item">
                         <span class="coin-icon">🪙</span>
@@ -46,41 +63,136 @@
                         <span id="power">50</span>
                     </div>
                 </div>
-                <button class="settings-btn" id="settingsBtn">⚙️</button>
+                
+                <div class="settings-container">
+                    <button class="settings-btn" id="settingsBtn" title="Settings">⚙️</button>
+                    
+                    <!-- Settings Dropdown -->
+                    <div class="settings-dropdown hidden" id="settingsDropdown">
+                        <div class="dropdown-header">
+                            <span>Settings</span>
+                            <button class="dropdown-close" id="settingsDropdownClose">✕</button>
+                        </div>
+                        <button class="dropdown-item" id="muteToggle">
+                            <span class="item-icon" id="muteIcon">🔊</span>
+                            <span class="item-label" id="muteLabel">Sound: ON</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Room Cards -->
             <div class="room-cards-container">
                 <button class="nav-arrow nav-left" id="navLeft">◀</button>
                 
-                <div class="room-cards">
-                    <div class="room-card" data-room="classic">
-                        <div class="room-card-image classic-room">
-                            <div class="room-icon">🎪</div>
-                        </div>
-                        <div class="room-card-title">Classic Bingo</div>
-                        <div class="room-card-desc">Traditional fun awaits!</div>
-                    </div>
-
-                    <div class="room-card" data-room="adventure">
-                        <div class="room-card-image adventure-room">
-                            <div class="room-icon">🗿</div>
-                            <div class="room-label">Intro</div>
-                        </div>
-                        <div class="room-card-title">Aztec Adventure</div>
-                        <div class="room-card-desc">An action packed path to Bingo!</div>
-                    </div>
-
-                    <div class="room-card locked" data-room="tropical">
-                        <div class="room-card-image tropical-room">
-                            <div class="room-icon">🏝️</div>
-                            <div class="lock-overlay">
-                                <div class="lock-icon">🔒</div>
-                                <div class="unlock-text">Unlocks At<br><strong>Level 3</strong></div>
+                <!-- What's Hot Tab Content -->
+                <div class="tab-content" id="whatsHotContent">
+                    <div class="room-cards">
+                        <div class="room-card" data-room="classic">
+                            <div class="room-card-image classic-room">
+                                <div class="room-icon">🎪</div>
                             </div>
+                            <div class="room-card-title">Classic Bingo</div>
+                            <div class="room-card-desc">Traditional fun awaits!</div>
                         </div>
-                        <div class="room-card-title">Tropical Bash</div>
-                        <div class="room-card-desc">Island paradise awaits!</div>
+
+                        <div class="room-card" data-room="adventure">
+                            <div class="room-card-image adventure-room">
+                                <div class="room-icon">🗿</div>
+                                <div class="room-label">Intro</div>
+                            </div>
+                            <div class="room-card-title">Aztec Adventure</div>
+                            <div class="room-card-desc">An action packed path to Bingo!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="tropical">
+                            <div class="room-card-image tropical-room">
+                                <div class="room-icon">🏝️</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Unlocks At<br><strong>Level 3</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Tropical Bash</div>
+                            <div class="room-card-desc">Island paradise awaits!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bingo Rooms Tab Content -->
+                <div class="tab-content hidden" id="bingoRoomsContent">
+                    <div class="room-cards">
+                        <div class="room-card locked" data-room="space">
+                            <div class="room-card-image space-room">
+                                <div class="room-icon">🚀</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Unlocks At<br><strong>Level 5</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Space Odyssey</div>
+                            <div class="room-card-desc">Blast off to cosmic wins!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="pirate">
+                            <div class="room-card-image pirate-room">
+                                <div class="room-icon">🏴‍☠️</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Unlocks At<br><strong>Level 10</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Pirate's Treasure</div>
+                            <div class="room-card-desc">Hunt for hidden riches!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="candy">
+                            <div class="room-card-image candy-room">
+                                <div class="room-icon">🍭</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Unlocks At<br><strong>Level 15</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Candy Land</div>
+                            <div class="room-card-desc">Sweet victories await!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="jungle">
+                            <div class="room-card-image jungle-room">
+                                <div class="room-icon">🦁</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Unlocks At<br><strong>Level 18</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Jungle Safari</div>
+                            <div class="room-card-desc">Wild wins in the safari!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="casino">
+                            <div class="room-card-image casino-room">
+                                <div class="room-icon">🎰</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Coming<br><strong>Soon!</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Vegas Nights</div>
+                            <div class="room-card-desc">Hit the jackpot!</div>
+                        </div>
+
+                        <div class="room-card locked" data-room="underwater">
+                            <div class="room-card-image underwater-room">
+                                <div class="room-icon">🐠</div>
+                                <div class="lock-overlay">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="unlock-text">Coming<br><strong>Soon!</strong></div>
+                                </div>
+                            </div>
+                            <div class="room-card-title">Ocean Deep</div>
+                            <div class="room-card-desc">Dive into fortune!</div>
+                        </div>
                     </div>
                 </div>
 
@@ -89,19 +201,15 @@
 
             <!-- Bottom Navigation -->
             <div class="bottom-nav">
-                <button class="nav-item">
-                    <span class="nav-icon">🏠</span>
-                    <span class="nav-label">Bashville</span>
-                </button>
-                <button class="nav-item">
+                <button class="nav-item active" id="whatsHotTab">
                     <span class="nav-icon">🔥</span>
                     <span class="nav-label">What's Hot</span>
                 </button>
-                <button class="nav-item active">
+                <button class="nav-item" id="bingoRoomsTab">
                     <span class="nav-icon">🎮</span>
                     <span class="nav-label">Bingo Rooms</span>
                 </button>
-                <button class="nav-item">
+                <button class="nav-item" id="miniGamesTab">
                     <span class="nav-icon">🎲</span>
                     <span class="nav-label">Mini Games</span>
                 </button>

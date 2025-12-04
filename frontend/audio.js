@@ -7,6 +7,7 @@ class BingoAudio {
     constructor() {
         this.audioContext = null;
         this.isMuted = false;
+        this.masterVolume = 1; // 0 = muted, 1 = full volume
         
         // Initialize audio context on user interaction
         this.initAudioContext();
@@ -36,7 +37,7 @@ class BingoAudio {
      * Play a tone
      */
     playTone(frequency, duration, type = 'sine', volume = 0.3) {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
@@ -49,7 +50,8 @@ class BingoAudio {
         oscillator.frequency.value = frequency;
         oscillator.type = type;
         
-        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        const adjustedVolume = volume * this.masterVolume;
+        gainNode.gain.setValueAtTime(adjustedVolume, this.audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
         
         oscillator.start(this.audioContext.currentTime);
@@ -60,7 +62,7 @@ class BingoAudio {
      * Play number call sound
      */
     playNumberCall() {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
@@ -80,7 +82,7 @@ class BingoAudio {
      * Play daub (mark) sound
      */
     playDaub() {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
@@ -95,7 +97,8 @@ class BingoAudio {
         oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
         oscillator.type = 'sine';
         
-        gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+        const adjustedVolume = 0.3 * this.masterVolume;
+        gainNode.gain.setValueAtTime(adjustedVolume, this.audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
         
         oscillator.start(this.audioContext.currentTime);
@@ -106,7 +109,7 @@ class BingoAudio {
      * Play error sound
      */
     playError() {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
@@ -118,7 +121,7 @@ class BingoAudio {
      * Play win sound
      */
     playWin() {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
@@ -141,7 +144,7 @@ class BingoAudio {
      * Play button click sound
      */
     playClick() {
-        if (!this.audioContext || this.isMuted) return;
+        if (!this.audioContext || this.isMuted || this.masterVolume === 0) return;
         
         this.resumeContext();
         
