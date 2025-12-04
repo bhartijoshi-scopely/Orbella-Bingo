@@ -223,21 +223,50 @@ class BingoUI {
             });
         });
         
-        // Show win modal
+        // Trigger non-blocking 3D win overlay instead of modal
         setTimeout(() => {
-            this.showWinModal(winningPatterns);
-        }, 1000);
+            this.showWinOverlay3D(winningPatterns);
+        }, 600);
     }
 
     /**
-     * Show win modal
+     * Show 3D win overlay (non-blocking)
      */
-    showWinModal(winningPatterns) {
-        const patternNames = winningPatterns.map(p => p.name).join(', ');
-        this.winPatternEl.textContent = `Winning Pattern: ${patternNames}`;
-        
-        this.winModal.classList.add('show');
-        this.createConfetti();
+    showWinOverlay3D(winningPatterns) {
+        const root = document.getElementById('gameScreen');
+        if (!root) return;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'win-overlay-3d';
+
+        // Label
+        const label = document.createElement('div');
+        label.className = 'win-3d-label';
+        label.textContent = 'BINGO!';
+        overlay.appendChild(label);
+
+        // Confetti
+        const colors = ['#f97316', '#facc15', '#22c55e', '#38bdf8', '#a855f7', '#ec4899'];
+        const count = 80;
+        for (let i = 0; i < count; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti-3d';
+            c.style.left = `${Math.random() * 100}%`;
+            c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDuration = `${1.5 + Math.random() * 1.5}s`;
+            c.style.animationDelay = `${Math.random() * 0.4}s`;
+            overlay.appendChild(c);
+        }
+
+        root.appendChild(overlay);
+
+        // Fade out and cleanup
+        setTimeout(() => {
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                overlay.remove();
+            }, 600);
+        }, 1700);
     }
 
     /**

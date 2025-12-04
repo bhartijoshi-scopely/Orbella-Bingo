@@ -583,8 +583,8 @@ body {
     background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
 }
 
-.tropical-room {
-    background: linear-gradient(135deg, #00CED1 0%, #20B2AA 100%);
+.orbella-room {
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
 }
 
 .space-room {
@@ -1402,3 +1402,402 @@ body {
         flex: 0 0 300px;
     }
 }
+
+/* ========================================
+   WIN OVERLAY (3D EFFECT)
+   ======================================== */
+.win-overlay-3d {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    perspective: 800px;
+    overflow: hidden;
+    z-index: 2000;
+}
+
+.win-overlay-3d.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.confetti-3d {
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0.95;
+    animation-name: confettiFall3d;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+}
+
+@keyframes confettiFall3d {
+    0% { transform: translateY(-10%) rotateX(0) rotateY(0) translateZ(0); opacity: 1; }
+    100% { transform: translateY(110vh) rotateX(720deg) rotateY(540deg) translateZ(0); opacity: 0; }
+}
+
+.win-3d-label {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    background: linear-gradient(90deg, #ffd166, #ef476f, #06d6a0, #118ab2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: winLabelPop 0.6s cubic-bezier(.2,1.4,.3,1) forwards;
+}
+
+@keyframes winLabelPop {
+    0% { transform: translate(-50%, -50%) scale(0.4) rotateX(20deg); opacity: 0; }
+    60% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ========================================
+   ORBELLA ROOM
+   ======================================== */
+.orbella-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.orbella-top-bar {
+    background: transparent;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #e5e7eb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+}
+
+.orbella-status {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.orbella-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+    padding: 40px 24px 24px;
+}
+
+.orbella-main.hidden {
+    display: none !important;
+}
+
+.orbella-main.full-video {
+    grid-template-columns: 1fr;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    gap: 0;
+    display: block;
+}
+
+.orbella-main.full-video .orbella-left {
+    display: none !important;
+}
+
+.orbella-main.full-video .orbella-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.orbella-right {
+    display: flex;
+}
+
+.orbella-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 16px;
+    color: #e5e7eb;
+}
+
+.orbella-card-title {
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.orbella-option-group {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.orbella-label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 6px;
+    color: #cbd5e1;
+}
+
+.orbella-textarea {
+    width: 100%;
+    min-height: 90px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #e5e7eb;
+    padding: 10px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.orbella-file {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.orbella-hint {
+    font-size: 0.85em;
+    color: #9ca3af;
+    margin-top: 10px;
+}
+
+.video-box {
+    width: 100%;
+    height: 100%;
+    background: #0b1020;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.video-box canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Orbella Modal */
+.orbella-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.orbella-modal.hidden {
+    display: none !important;
+}
+
+.orbella-modal-dialog {
+    width: 520px;
+    max-width: 90vw;
+    background: #111827;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    color: #e5e7eb;
+}
+
+.orbella-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.05);
+}
+
+.orbella-modal-title {
+    font-weight: 800;
+}
+
+.orbella-modal-close {
+    background: transparent;
+    border: none;
+    color: #e5e7eb;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.orbella-modal-body {
+    padding: 16px;
+}
+
+.orbella-modal-footer {
+    padding: 12px 16px;
+}
+
+/* ========================================
+   COMPACT GAME UI (CLASSIC / ADVENTURE)
+   ======================================== */
+#gameScreen.game-compact .game-board-container {
+    background:
+        radial-gradient(1200px 600px at 50% 28%, rgba(255,255,255,0.35), rgba(0,0,0,0)),
+        linear-gradient(180deg, #eaf6ff 0%, #f7ecff 55%, #fdeff5 100%);
+}
+
+#gameScreen.game-compact .game-top-bar {
+    background: rgba(255, 255, 255, 0.82);
+    margin: 10px 16px;
+    border-radius: 9999px;
+    padding: 8px 16px;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+}
+
+#gameScreen.game-compact .called-numbers-top {
+    gap: 16px;
+}
+
+#gameScreen.game-compact .called-ball {
+    width: 58px;
+    height: 58px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #eef2f7);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12) inset, 0 6px 16px rgba(0,0,0,0.16);
+}
+
+#gameScreen.game-compact .called-ball .ball-letter,
+#gameScreen.game-compact .called-ball .ball-number {
+    color: #2a2f47;
+}
+
+/* keep only 6 balls (current + 5 history), hide any extras */
+#gameScreen.game-compact .called-numbers-top .called-ball:nth-of-type(n+7) {
+    display: none !important;
+}
+
+#gameScreen.game-compact .game-info {
+    margin-left: auto;
+}
+
+#gameScreen.game-compact .room-info {
+    display: none !important;
+}
+
+#gameScreen.game-compact .power-play {
+    background: rgba(15, 23, 42, 0.04);
+    border-radius: 9999px;
+    padding: 6px 14px;
+    gap: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+#gameScreen.game-compact .power-label {
+    color: #1f2933;
+    font-weight: 600;
+}
+
+#gameScreen.game-compact .power-count {
+    color: #111827;
+}
+
+#gameScreen.game-compact .power-bar {
+    width: 160px;
+    height: 10px;
+    border-radius: 9999px;
+    background: rgba(148, 163, 184, 0.25);
+}
+
+#gameScreen.game-compact .power-fill {
+    background: linear-gradient(90deg, #60a5fa 0%, #6366f1 45%, #ec4899 100%);
+}
+
+#gameScreen.game-compact .game-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: start;
+}
+
+#gameScreen.game-compact .center-section,
+#gameScreen.game-compact .chat-section {
+    display: none !important;
+}
+
+#gameScreen.game-compact .bingo-section {
+    width: min(460px, 88%);
+    margin: 68px auto 0;
+}
+
+#gameScreen.game-compact .card-controls {
+    display: none !important;
+}
+
+#gameScreen.game-compact .bingo-header-letters {
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+#gameScreen.game-compact .bingo-letter {
+    background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 100%);
+    padding: 6px 10px;
+    border-radius: 10px;
+    color: #263238;
+    text-shadow: none;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+#gameScreen.game-compact .bingo-letter:nth-child(1) { background: linear-gradient(180deg, #ffd89a 0%, #fbbf24 100%); color: #3a2e00; }
+#gameScreen.game-compact .bingo-letter:nth-child(2) { background: linear-gradient(180deg, #cfe8ff 0%, #93c5fd 100%); color: #0b254a; }
+#gameScreen.game-compact .bingo-letter:nth-child(3) { background: linear-gradient(180deg, #e6d7ff 0%, #c4b5fd 100%); color: #2e1065; }
+#gameScreen.game-compact .bingo-letter:nth-child(4) { background: linear-gradient(180deg, #ffd0dc 0%, #fda4af 100%); color: #49111c; }
+#gameScreen.game-compact .bingo-letter:nth-child(5) { background: linear-gradient(180deg, #d6fbe6 0%, #86efac 100%); color: #064e3b; }
+
+#gameScreen.game-compact .bingo-card {
+    padding: 12px;
+    gap: 6px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 14px 32px rgba(15,23,42,0.18);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+#gameScreen.game-compact .bingo-tile {
+    border-radius: 14px;
+    border: 1px solid rgba(148,163,184,0.45);
+    background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+    box-shadow: 0 5px 14px rgba(15,23,42,0.12);
+    color: #0f172a;
+    font-size: 1.18em;
+}
+
+#gameScreen.game-compact .bingo-tile.marked {
+    background: linear-gradient(180deg, #ff7ac4 0%, #ff3d8b 100%);
+    box-shadow: 0 8px 0 #7c2852, 0 8px 24px rgba(0,0,0,0.35);
+}
+
+#gameScreen.game-compact .card-indicator {
+    background: #2a2f47;
+    color: #fff;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+

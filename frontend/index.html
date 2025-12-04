@@ -105,16 +105,13 @@
                             <div class="room-card-desc">An action packed path to Bingo!</div>
                         </div>
 
-                        <div class="room-card locked" data-room="tropical">
-                            <div class="room-card-image tropical-room">
-                                <div class="room-icon">🏝️</div>
-                                <div class="lock-overlay">
-                                    <div class="lock-icon">🔒</div>
-                                    <div class="unlock-text">Unlocks At<br><strong>Level 3</strong></div>
-                                </div>
+                        <div class="room-card" data-room="orbella">
+                            <div class="room-card-image orbella-room">
+                                <div class="room-icon">✨</div>
+                                <div class="room-label">New</div>
                             </div>
-                            <div class="room-card-title">Tropical Bash</div>
-                            <div class="room-card-desc">Island paradise awaits!</div>
+                            <div class="room-card-title">Orbella</div>
+                            <div class="room-card-desc">Create your custom video!</div>
                         </div>
                     </div>
                 </div>
@@ -358,6 +355,66 @@
         </div>
     </div>
 
+    <!-- SCREEN 4: Orbella Room Screen -->
+    <div class="screen hidden" id="orbellaScreen">
+        <div class="orbella-container">
+            <div class="orbella-top-bar">
+                <button class="home-btn" id="orbellaHomeBtn">🏠</button>
+                <div class="orbella-status" id="orbellaStatus">Ready</div>
+            </div>
+            <div class="orbella-main hidden" id="orbellaMain">
+                <div class="orbella-left">
+                    <div class="orbella-card">
+                        <div class="orbella-card-title">Generate Background</div>
+                        <div class="orbella-option-group">
+                            <label><input type="radio" name="orbellaMode" value="text" checked> Text</label>
+                            <label><input type="radio" name="orbellaMode" value="image"> Upload Image</label>
+                        </div>
+                        <div id="orbellaTextInputGroup">
+                            <label class="orbella-label">Theme or prompt</label>
+                            <textarea id="orbellaText" class="orbella-textarea" placeholder="e.g. Cozy autumn forest"></textarea>
+                        </div>
+                        <div id="orbellaImageInputGroup" class="hidden">
+                            <label class="orbella-label">Choose an image</label>
+                            <input id="orbellaImage" class="orbella-file" type="file" accept="image/*" />
+                        </div>
+                        <button class="btn btn-primary btn-large" id="orbellaGenerateBtn">Generate</button>
+                        <div class="orbella-hint">Your video will loop seamlessly.</div>
+                    </div>
+                </div>
+                <div class="orbella-right">
+                    <div id="orbellaCanvas" class="video-box"></div>
+                </div>
+            </div>
+            <!-- Orbella Input Modal -->
+            <div id="orbellaModal" class="orbella-modal hidden">
+                <div class="orbella-modal-dialog">
+                    <div class="orbella-modal-header">
+                        <div class="orbella-modal-title">Generate Background</div>
+                        <button id="orbellaModalClose" class="orbella-modal-close">✕</button>
+                    </div>
+                    <div class="orbella-modal-body">
+                        <div class="orbella-option-group">
+                            <label><input type="radio" name="orbellaModalMode" value="text" checked> Text</label>
+                            <label><input type="radio" name="orbellaModalMode" value="image"> Upload Image</label>
+                        </div>
+                        <div id="orbellaModalTextGroup">
+                            <label class="orbella-label">Theme or prompt</label>
+                            <textarea id="orbellaModalText" class="orbella-textarea" placeholder="e.g. Cozy autumn forest"></textarea>
+                        </div>
+                        <div id="orbellaModalImageGroup" class="hidden">
+                            <label class="orbella-label">Choose an image</label>
+                            <input id="orbellaModalImage" class="orbella-file" type="file" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="orbella-modal-footer">
+                        <button class="btn btn-primary btn-large" id="orbellaModalGenerate">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Win Modal -->
     <div class="modal" id="winModal">
         <div class="modal-content">
@@ -373,6 +430,12 @@
     <script src="audio.js"></script>
     <script src="game.js"></script>
     <script src="ui.js"></script>
+    <!-- Explicitly point frontend to backend API -->
+    <script>
+      window.ORBELLA_API_BASE = 'http://127.0.0.1:8000';
+    </script>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="orbella.js"></script>
     <script src="main.js"></script>
-</body>
-</html>
+  </body>
+  </html>

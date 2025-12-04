@@ -39,6 +39,7 @@ const animalProfiles = [
 const welcomeScreen = document.getElementById('welcomeScreen');
 const roomScreen = document.getElementById('roomScreen');
 const gameScreen = document.getElementById('gameScreen');
+const orbellaScreen = document.getElementById('orbellaScreen');
 
 /**
  * Navigate between screens
@@ -48,6 +49,7 @@ function showScreen(screenName) {
     welcomeScreen.classList.add('hidden');
     roomScreen.classList.add('hidden');
     gameScreen.classList.add('hidden');
+    if (orbellaScreen) orbellaScreen.classList.add('hidden');
     
     // Show requested screen
     switch(screenName) {
@@ -59,6 +61,12 @@ function showScreen(screenName) {
             break;
         case 'game':
             gameScreen.classList.remove('hidden');
+            break;
+        case 'orbella':
+            if (orbellaScreen) orbellaScreen.classList.remove('hidden');
+            if (window.enterOrbellaRoom) {
+                try { window.enterOrbellaRoom(); } catch (_) {}
+            }
             break;
     }
     
@@ -128,7 +136,7 @@ function setupEventListeners() {
     // Room Screen Buttons - Setup dynamically
     setupRoomCards();
     
-    // Home button
+    // Home button (game)
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
         homeBtn.addEventListener('click', () => {
@@ -138,6 +146,18 @@ function setupEventListeners() {
                 if (numberCallTimeout) {
                     clearTimeout(numberCallTimeout);
                 }
+            }
+            showScreen('room');
+        });
+    }
+
+    // Home button (Orbella)
+    const orbellaHomeBtn = document.getElementById('orbellaHomeBtn');
+    if (orbellaHomeBtn) {
+        orbellaHomeBtn.addEventListener('click', () => {
+            audio.playClick();
+            if (window.leaveOrbellaRoom) {
+                try { window.leaveOrbellaRoom(); } catch (_) {}
             }
             showScreen('room');
         });
@@ -239,8 +259,8 @@ function setupTabSystem() {
             whatsHotContent.classList.remove('hidden');
             bingoRoomsContent.classList.add('hidden');
             
-            // Hide arrows for What's Hot (only 3 cards)
-            updateArrowVisibility(false);
+            // Show arrows so user can navigate between rooms
+            updateArrowVisibility(true);
             
             // Re-setup room cards for the new view
             setupRoomCards();
@@ -279,8 +299,8 @@ function setupTabSystem() {
         });
     }
     
-    // Initialize - hide arrows on What's Hot (default tab)
-    updateArrowVisibility(false);
+    // Initialize - show arrows on default tab so user can navigate rooms
+    updateArrowVisibility(true);
 }
 
 /**
@@ -292,11 +312,36 @@ function setupRoomCards() {
         // Remove existing listeners by cloning
         const newCard = card.cloneNode(true);
         card.parentNode.replaceChild(newCard, card);
-        
+
         newCard.addEventListener('click', () => {
             audio.playClick();
             const roomType = newCard.dataset.room;
             console.log(`Selected room: ${roomType}`);
+
+            if (roomType === 'orbella') {
+                // Normal game should not be running
+                if (game.isGameActive) {
+                    game.stopGame();
+                    if (numberCallTimeout) {
+                        clearTimeout(numberCallTimeout);
+                    }
+                }
+                // Ensure compact mode is off for Orbella
+                gameScreen.classList.remove('game-compact');
+                showScreen('orbella');
+                if (window.enterOrbellaRoom) {
+                    try { window.enterOrbellaRoom(); } catch (_) {}
+                }
+                return;
+            }
+
+            // Classic / Adventure and others use compact mode
+            if (roomType === 'classic' || roomType === 'adventure') {
+                gameScreen.classList.add('game-compact');
+            } else {
+                gameScreen.classList.remove('game-compact');
+            }
+
             showScreen('game');
             // Auto-start the game
             setTimeout(() => startGame(), 500);

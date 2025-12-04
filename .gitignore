@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.env
+*.env
+.venv/
+venv/
+.env*/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+
+# Logs
+logs/
+*.log
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cache
+.cache/
+.frontend-cache/
+
+# Local data / videos
+backend/video/
