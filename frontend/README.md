@@ -53,7 +53,7 @@ A fun, colorful bingo game built with vanilla JavaScript, HTML, and CSS. Play lo
    - **Option 3**: Use a local server (recommended for best experience):
      ```bash
      # Python 3
-     python3 -m http.server 8000
+     python3 -m http.server 8080
      
      # Python 2
      python -m SimpleHTTPServer 8000
