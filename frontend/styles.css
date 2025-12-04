@@ -1,0 +1,1144 @@
+/* ========================================
+   BINGO BASH - COMPLETE STYLESHEET
+   Multi-Screen Casual Bingo Game
+   ======================================== */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    background: linear-gradient(180deg, #87CEEB 0%, #4682B4 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Screen Management */
+.screen {
+    width: 100%;
+    max-width: 1024px;
+    height: 100vh;
+    max-height: 768px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+}
+
+.screen.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ========================================
+   SCREEN 1: WELCOME SCREEN
+   ======================================== */
+
+.welcome-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    overflow: hidden;
+}
+
+/* Decorative clouds */
+.welcome-container::before,
+.welcome-container::after {
+    content: '☁️';
+    position: absolute;
+    font-size: 4em;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+}
+
+.welcome-container::before {
+    top: 10%;
+    left: 10%;
+}
+
+.welcome-container::after {
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.welcome-badge {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 15px 20px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    line-height: 1.2;
+    transform: rotate(-15deg);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: rotate(-15deg) translateY(0); }
+    50% { transform: rotate(-15deg) translateY(-10px); }
+}
+
+.game-logo {
+    margin-bottom: 30px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-bingo {
+    font-size: 5em;
+    font-weight: 900;
+    letter-spacing: 10px;
+    background: linear-gradient(45deg, 
+        #FF6B9D 0%, 
+        #4ECDC4 20%, 
+        #FFE66D 40%, 
+        #FF6B9D 60%,
+        #C44569 80%,
+        #9B59B6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+    animation: rainbow 3s ease-in-out infinite;
+}
+
+.logo-bash {
+    font-size: 3.5em;
+    font-weight: 900;
+    color: #FFD93D;
+    text-shadow: 
+        3px 3px 0 #FF6B9D,
+        6px 6px 0 rgba(0, 0, 0, 0.2);
+    margin-top: -20px;
+}
+
+@keyframes rainbow {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(20deg); }
+}
+
+.welcome-character {
+    margin: 30px 0;
+}
+
+.character-emoji {
+    font-size: 8em;
+    animation: wiggle 1.5s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.btn-facebook {
+    background: #4267B2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.fb-icon {
+    background: white;
+    color: #4267B2;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-family: serif;
+}
+
+.btn-guest {
+    background: linear-gradient(135deg, #A8E6CF 0%, #FFD3B6 100%);
+    color: #333;
+}
+
+.welcome-footer {
+    margin-top: 30px;
+    color: #333;
+    font-size: 0.9em;
+    text-align: center;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+/* ========================================
+   SCREEN 2: ROOM SELECTION
+   ======================================== */
+
+.room-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #5DADE2 0%, #85C1E9 100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(52, 152, 219, 0.5);
+}
+
+.level-badge {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.currency-display {
+    display: flex;
+    gap: 15px;
+}
+
+.currency-item {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.coin-icon, .power-icon {
+    font-size: 1.2em;
+}
+
+.settings-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.settings-btn:hover {
+    transform: rotate(90deg);
+}
+
+/* Room Cards */
+.room-cards-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+.room-cards {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.room-card {
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    width: 250px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.room-card:hover:not(.locked) {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.room-card.locked {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.room-card-image {
+    height: 200px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.classic-room {
+    background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+}
+
+.adventure-room {
+    background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
+}
+
+.tropical-room {
+    background: linear-gradient(135deg, #00CED1 0%, #20B2AA 100%);
+}
+
+.room-icon {
+    font-size: 5em;
+    animation: float 3s ease-in-out infinite;
+}
+
+.room-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.lock-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.unlock-text {
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.room-card-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.room-card-desc {
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+}
+
+.nav-arrow {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+    transform: scale(1.1);
+    background: white;
+}
+
+.nav-left {
+    left: 20px;
+}
+
+.nav-right {
+    right: 20px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(52, 73, 94, 0.9);
+    padding: 15px;
+}
+
+.nav-item {
+    background: transparent;
+    border: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-icon {
+    font-size: 1.5em;
+}
+
+.nav-label {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+/* ========================================
+   SCREEN 3: GAME BOARD
+   ======================================== */
+
+.game-board-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Top Game Bar */
+.game-top-bar {
+    background: rgba(30, 60, 114, 0.9);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.home-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.called-numbers-top {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.called-ball {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 3px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.called-ball.empty {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.called-ball[data-letter="B"] { border-color: #FF6B9D; background: white; }
+.called-ball[data-letter="I"] { border-color: #4ECDC4; background: white; }
+.called-ball[data-letter="N"] { border-color: #FFE66D; background: white; }
+.called-ball[data-letter="G"] { border-color: #95E1D3; background: white; }
+.called-ball[data-letter="O"] { border-color: #C44569; background: white; }
+
+.called-ball.current {
+    animation: pulse 1s ease-in-out infinite;
+    transform: scale(1.1);
+}
+
+.called-ball.current.empty {
+    animation: none;
+    transform: scale(1);
+}
+
+.ball-letter {
+    font-size: 0.7em;
+    font-weight: bold;
+    color: #666;
+}
+
+.ball-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.power-play {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.power-label {
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.power-bar {
+    width: 100px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.power-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD93D 0%, #FF6B9D 100%);
+    width: 75%;
+    transition: width 0.3s ease;
+}
+
+.power-count {
+    color: white;
+    font-weight: bold;
+}
+
+.room-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 15px;
+    color: white;
+    font-size: 0.9em;
+    display: flex;
+    gap: 10px;
+}
+
+.room-name {
+    font-weight: bold;
+}
+
+/* Main Game Area */
+.game-main {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Bingo Section */
+.bingo-section {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bingo-header-letters {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.bingo-letter {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.bingo-card {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.bingo-tile {
+    aspect-ratio: 1;
+    background: white;
+    border: 3px solid #9B59B6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    user-select: none;
+    position: relative;
+}
+
+.bingo-tile:hover:not(.marked):not(.free) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bingo-tile.marked {
+    background: linear-gradient(135deg, #C471ED 0%, #F64F59 100%);
+    color: white;
+    border-color: #F64F59;
+}
+
+.bingo-tile.marked::after {
+    content: '🎁';
+    position: absolute;
+    font-size: 2em;
+    opacity: 0.7;
+}
+
+.bingo-tile.free {
+    background: linear-gradient(135deg, #FFD93D 0%, #FFA500 100%);
+    font-size: 1em;
+    border-color: #FFA500;
+}
+
+.bingo-tile.winning {
+    animation: winningTile 0.6s ease-in-out infinite;
+}
+
+@keyframes winningTile {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+.card-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-btn {
+    background: rgba(155, 89, 182, 0.9);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8em;
+}
+
+.card-btn:hover {
+    background: rgba(155, 89, 182, 1);
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    font-size: 1.5em;
+}
+
+.card-indicator {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Center Section */
+.center-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.bingo-logo-game {
+    text-align: center;
+    position: relative;
+}
+
+.logo-3d {
+    font-size: 4em;
+    font-weight: 900;
+    color: #FFD93D;
+    text-shadow: 
+        3px 3px 0 #FF6B9D,
+        6px 6px 0 #C44569,
+        9px 9px 20px rgba(0, 0, 0, 0.5);
+    letter-spacing: 5px;
+}
+
+.tent-decoration {
+    font-size: 3em;
+    margin-top: 10px;
+}
+
+.powerups {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.powerup-slot {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.powerup-slot:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.powerup-icon {
+    font-size: 2.5em;
+}
+
+.powerup-count {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: #FF6B9D;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    border: 2px solid white;
+}
+
+/* Chat Section */
+.chat-section {
+    flex: 0 0 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auto-daub-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.daub-card {
+    width: 60px;
+    height: 60px;
+    background: rgba(155, 89, 182, 0.7);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.daub-card.active {
+    border-color: #FFD93D;
+    background: rgba(155, 89, 182, 1);
+}
+
+.card-num {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+}
+
+.star-icon {
+    font-size: 1.2em;
+}
+
+.chat-box {
+    flex: 1;
+    background: rgba(155, 89, 182, 0.9);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.chat-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-message {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.9em;
+}
+
+.chat-message.new {
+    background: transparent;
+    padding: 5px 0;
+    text-align: center;
+}
+
+.new-badge {
+    background: rgba(255, 107, 157, 0.8);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.8em;
+}
+
+.chat-input-container {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 5px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.9em;
+}
+
+.chat-send-btn {
+    background: rgba(255, 107, 157, 0.9);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chat-send-btn:hover {
+    background: rgba(255, 107, 157, 1);
+    transform: scale(1.05);
+}
+
+.chat-message.system {
+    background: rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-style: italic;
+}
+
+.chat-footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.footer-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.footer-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   WIN MODAL
+   ======================================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+    font-size: 3em;
+    color: #667eea;
+    margin-bottom: 20px;
+    animation: bounce-modal 1s ease-in-out infinite;
+}
+
+@keyframes bounce-modal {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.win-message {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.win-pattern {
+    font-size: 1.2em;
+    color: #f5576c;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.btn-large {
+    padding: 20px 50px;
+    font-size: 1.3em;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Confetti Animation */
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #f5576c;
+    animation: confettiFall 3s linear infinite;
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(600px) rotate(720deg); opacity: 0; }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .game-main {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    
+    .bingo-section,
+    .chat-section {
+        flex: none;
+        width: 100%;
+    }
+    
+    .room-cards {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-bingo {
+        font-size: 3em;
+    }
+    
+    .logo-bash {
+        font-size: 2em;
+    }
+    
+    .room-card {
+        width: 200px;
+    }
+    
+    .bingo-section {
+        flex: 0 0 300px;
+    }
+}

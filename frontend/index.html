@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Bash - Casual Bingo Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- SCREEN 1: Welcome Screen -->
+    <div class="screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-badge">NEW<br>ROOM</div>
+            <div class="game-logo">
+                <div class="logo-text">
+                    <span class="logo-bingo">BINGO</span>
+                    <span class="logo-bash">Bash</span>
+                </div>
+            </div>
+            <div class="welcome-character">
+                <div class="character-emoji">🎉</div>
+            </div>
+            <div class="welcome-buttons">
+                <button class="btn btn-facebook" id="playWithFriendsBtn">
+                    <span class="fb-icon">f</span> Play with Friends
+                </button>
+                <button class="btn btn-guest" id="playAsGuestBtn">Play as Guest</button>
+            </div>
+            <p class="welcome-footer">Sign in to save your progress and play on multiple devices.</p>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: Room Selection Screen -->
+    <div class="screen hidden" id="roomScreen">
+        <div class="room-container">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="level-badge">Lvl: 1</div>
+                <div class="currency-display">
+                    <div class="currency-item">
+                        <span class="coin-icon">🪙</span>
+                        <span id="coins">5,000</span>
+                    </div>
+                    <div class="currency-item">
+                        <span class="power-icon">⚡</span>
+                        <span id="power">50</span>
+                    </div>
+                </div>
+                <button class="settings-btn" id="settingsBtn">⚙️</button>
+            </div>
+
+            <!-- Room Cards -->
+            <div class="room-cards-container">
+                <button class="nav-arrow nav-left" id="navLeft">◀</button>
+                
+                <div class="room-cards">
+                    <div class="room-card" data-room="classic">
+                        <div class="room-card-image classic-room">
+                            <div class="room-icon">🎪</div>
+                        </div>
+                        <div class="room-card-title">Classic Bingo</div>
+                        <div class="room-card-desc">Traditional fun awaits!</div>
+                    </div>
+
+                    <div class="room-card" data-room="adventure">
+                        <div class="room-card-image adventure-room">
+                            <div class="room-icon">🗿</div>
+                            <div class="room-label">Intro</div>
+                        </div>
+                        <div class="room-card-title">Aztec Adventure</div>
+                        <div class="room-card-desc">An action packed path to Bingo!</div>
+                    </div>
+
+                    <div class="room-card locked" data-room="tropical">
+                        <div class="room-card-image tropical-room">
+                            <div class="room-icon">🏝️</div>
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <div class="unlock-text">Unlocks At<br><strong>Level 3</strong></div>
+                            </div>
+                        </div>
+                        <div class="room-card-title">Tropical Bash</div>
+                        <div class="room-card-desc">Island paradise awaits!</div>
+                    </div>
+                </div>
+
+                <button class="nav-arrow nav-right" id="navRight">▶</button>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <button class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Bashville</span>
+                </button>
+                <button class="nav-item">
+                    <span class="nav-icon">🔥</span>
+                    <span class="nav-label">What's Hot</span>
+                </button>
+                <button class="nav-item active">
+                    <span class="nav-icon">🎮</span>
+                    <span class="nav-label">Bingo Rooms</span>
+                </button>
+                <button class="nav-item">
+                    <span class="nav-icon">🎲</span>
+                    <span class="nav-label">Mini Games</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: Game Board Screen -->
+    <div class="screen hidden" id="gameScreen">
+        <div class="game-board-container">
+            <!-- Top Game Bar -->
+            <div class="game-top-bar">
+                <button class="home-btn" id="homeBtn">🏠</button>
+                
+                <!-- Called Numbers -->
+                <div class="called-numbers-top">
+                    <div class="called-ball current empty" data-letter="">
+                        <span class="ball-letter" id="ballLetterCurrent"></span>
+                        <span class="ball-number" id="ballCurrent"></span>
+                    </div>
+                    <div class="called-ball empty" data-letter="">
+                        <span class="ball-letter" id="ballLetter1"></span>
+                        <span class="ball-number" id="ball1"></span>
+                    </div>
+                    <div class="called-ball empty" data-letter="">
+                        <span class="ball-letter" id="ballLetter2"></span>
+                        <span class="ball-number" id="ball2"></span>
+                    </div>
+                    <div class="called-ball empty" data-letter="">
+                        <span class="ball-letter" id="ballLetter3"></span>
+                        <span class="ball-number" id="ball3"></span>
+                    </div>
+                    <div class="called-ball empty" data-letter="">
+                        <span class="ball-letter" id="ballLetter4"></span>
+                        <span class="ball-number" id="ball4"></span>
+                    </div>
+                    <div class="called-ball empty" data-letter="">
+                        <span class="ball-letter" id="ballLetter5"></span>
+                        <span class="ball-number" id="ball5"></span>
+                    </div>
+                </div>
+
+                <!-- Power Play & Room Info -->
+                <div class="game-info">
+                    <div class="power-play">
+                        <span class="power-label">Power Plays:</span>
+                        <div class="power-bar">
+                            <div class="power-fill" id="powerFill"></div>
+                        </div>
+                        <span class="power-count">⭐ +4</span>
+                    </div>
+                    <div class="room-info">
+                        <div class="room-name">Grand Canyon</div>
+                        <div class="bingos-left">10 Bingos left</div>
+                        <div class="players-count">6 Players</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Game Area -->
+            <div class="game-main">
+                <!-- Left: Bingo Card -->
+                <div class="bingo-section">
+                    <div class="bingo-header-letters">
+                        <span class="bingo-letter">B</span>
+                        <span class="bingo-letter">I</span>
+                        <span class="bingo-letter">N</span>
+                        <span class="bingo-letter">G</span>
+                        <span class="bingo-letter">O</span>
+                    </div>
+                    <div class="bingo-card" id="bingoCard">
+                        <!-- Card tiles will be generated by JavaScript -->
+                    </div>
+                    <div class="card-controls">
+                        <button class="card-btn" id="autoDaubBtn">
+                            <span class="btn-icon">🎯</span>
+                            Auto Daub<br>Card
+                        </button>
+                        <div class="card-indicator">Card 1</div>
+                        <button class="card-btn" id="fishCardBtn">
+                            <span class="btn-icon">🐟</span>
+                            Fish Card
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Center: Bingo Logo & Powerups -->
+                <div class="center-section">
+                    <div class="bingo-logo-game">
+                        <div class="logo-3d">BINGO</div>
+                        <div class="tent-decoration">🎪</div>
+                    </div>
+                    <div class="powerups">
+                        <div class="powerup-slot">
+                            <div class="powerup-icon">🎁</div>
+                            <div class="powerup-count">2</div>
+                        </div>
+                        <div class="powerup-slot">
+                            <div class="powerup-icon">✨</div>
+                        </div>
+                        <div class="powerup-slot">
+                            <div class="powerup-icon">🎯</div>
+                        </div>
+                        <div class="powerup-slot">
+                            <div class="powerup-icon">⚡</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Chat & Players -->
+                <div class="chat-section">
+                    <div class="auto-daub-cards">
+                        <div class="daub-card active">
+                            <span class="card-num">3</span>
+                            <span class="star-icon">⭐</span>
+                        </div>
+                        <div class="daub-card">
+                            <span class="card-num">4</span>
+                            <span class="star-icon">⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-box">
+                        <div class="chat-header">
+                            <span>CHAT</span>
+                            <button class="chat-close">✕</button>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message system">
+                                <em>Welcome to the game! Good luck! 🍀</em>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" placeholder="Type to chat" id="chatInput">
+                            <button class="chat-send-btn" id="chatSendBtn">Send</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-footer">
+                        <button class="footer-btn">🏆</button>
+                        <button class="footer-btn">📋</button>
+                        <button class="footer-btn">👥</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <div class="confetti-container" id="confetti"></div>
+            <h2>🎊 BINGO! 🎊</h2>
+            <p class="win-message">Congratulations! You won!</p>
+            <div class="win-pattern" id="winPattern"></div>
+            <button class="btn btn-primary btn-large" id="playAgainBtn">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- Audio Elements (using Web Audio API for generated sounds) -->
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
