@@ -10,6 +10,11 @@
     <!-- SCREEN 1: Welcome Screen -->
     <div class="screen" id="welcomeScreen">
         <div class="welcome-container">
+            <!-- Background Video -->
+            <video class="welcome-bg-video" autoplay loop muted playsinline disablePictureInPicture>
+                <source src="assets/videos/welcome-background.webm" type="video/webm">
+                <source src="assets/videos/welcome-background.mp4" type="video/mp4">
+            </video>
             <div class="welcome-badge">NEW<br>ROOM</div>
             <div class="game-logo">
                 <div class="logo-text">
@@ -27,6 +32,23 @@
                 <button class="btn btn-guest" id="playAsGuestBtn">Play as Guest</button>
             </div>
             <p class="welcome-footer">Sign in to save your progress and play on multiple devices.</p>
+        </div>
+        
+        <!-- Friends Popup Modal -->
+        <div class="modal-overlay hidden" id="friendsModal">
+            <div class="modal-popup">
+                <div class="dropdown-header">
+                    <span>😅 Play With Friends</span>
+                    <button class="dropdown-close" id="friendsCloseBtn">✕</button>
+                </div>
+                <div class="modal-content">
+                    <p>But you don't have any friends! 😢</p>
+                    <p>Just play as <strong>Guest</strong> instead!</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-modal-ok" id="friendsOkBtn">OK, I'll Play Solo 😭</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -90,7 +112,10 @@
                     <div class="room-cards">
                         <div class="room-card" data-room="classic">
                             <div class="room-card-image classic-room">
-                                <div class="room-icon">🎪</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/classic-bingo.webm" type="video/webm">
+                                    <source src="assets/rooms/classic-bingo.mp4" type="video/mp4">
+                                </video>
                             </div>
                             <div class="room-card-title">Classic Bingo</div>
                             <div class="room-card-desc">Traditional fun awaits!</div>
@@ -98,8 +123,10 @@
 
                         <div class="room-card" data-room="adventure">
                             <div class="room-card-image adventure-room">
-                                <div class="room-icon">🗿</div>
-                                <div class="room-label">Intro</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/aztec-adventure.webm" type="video/webm">
+                                    <source src="assets/rooms/aztec-adventure.mp4" type="video/mp4">
+                                </video>
                             </div>
                             <div class="room-card-title">Aztec Adventure</div>
                             <div class="room-card-desc">An action packed path to Bingo!</div>
@@ -121,7 +148,10 @@
                     <div class="room-cards">
                         <div class="room-card locked" data-room="space">
                             <div class="room-card-image space-room">
-                                <div class="room-icon">🚀</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/space-odyssey.webm" type="video/webm">
+                                    <source src="assets/rooms/space-odyssey.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Unlocks At<br><strong>Level 5</strong></div>
@@ -133,7 +163,10 @@
 
                         <div class="room-card locked" data-room="pirate">
                             <div class="room-card-image pirate-room">
-                                <div class="room-icon">🏴‍☠️</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/pirate-treasure.webm" type="video/webm">
+                                    <source src="assets/rooms/pirate-treasure.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Unlocks At<br><strong>Level 10</strong></div>
@@ -145,7 +178,10 @@
 
                         <div class="room-card locked" data-room="candy">
                             <div class="room-card-image candy-room">
-                                <div class="room-icon">🍭</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/candy-land.webm" type="video/webm">
+                                    <source src="assets/rooms/candy-land.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Unlocks At<br><strong>Level 15</strong></div>
@@ -157,7 +193,10 @@
 
                         <div class="room-card locked" data-room="jungle">
                             <div class="room-card-image jungle-room">
-                                <div class="room-icon">🦁</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/jungle-safari.webm" type="video/webm">
+                                    <source src="assets/rooms/jungle-safari.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Unlocks At<br><strong>Level 18</strong></div>
@@ -169,7 +208,10 @@
 
                         <div class="room-card locked" data-room="casino">
                             <div class="room-card-image casino-room">
-                                <div class="room-icon">🎰</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/vegas-nights.webm" type="video/webm">
+                                    <source src="assets/rooms/vegas-nights.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Coming<br><strong>Soon!</strong></div>
@@ -181,7 +223,10 @@
 
                         <div class="room-card locked" data-room="underwater">
                             <div class="room-card-image underwater-room">
-                                <div class="room-icon">🐠</div>
+                                <video class="room-video" autoplay loop muted playsinline disablePictureInPicture>
+                                    <source src="assets/rooms/ocean-deep.webm" type="video/webm">
+                                    <source src="assets/rooms/ocean-deep.mp4" type="video/mp4">
+                                </video>
                                 <div class="lock-overlay">
                                     <div class="lock-icon">🔒</div>
                                     <div class="unlock-text">Coming<br><strong>Soon!</strong></div>
@@ -199,17 +244,46 @@
             <!-- Bottom Navigation -->
             <div class="bottom-nav">
                 <button class="nav-item active" id="whatsHotTab">
-                    <span class="nav-icon">🔥</span>
+                    <video class="nav-icon-video" autoplay loop muted playsinline disablePictureInPicture>
+                        <source src="assets/videos/fire-icon.webm" type="video/webm">
+                        <source src="assets/videos/fire-icon.mp4" type="video/mp4">
+                        <span class="nav-icon">🔥</span>
+                    </video>
                     <span class="nav-label">What's Hot</span>
                 </button>
                 <button class="nav-item" id="bingoRoomsTab">
-                    <span class="nav-icon">🎮</span>
+                    <video class="nav-icon-video" autoplay loop muted playsinline disablePictureInPicture>
+                        <source src="assets/videos/bingo-card-icon.webm" type="video/webm">
+                        <source src="assets/videos/bingo-card-icon.mp4" type="video/mp4">
+                        <span class="nav-icon">🎮</span>
+                    </video>
                     <span class="nav-label">Bingo Rooms</span>
                 </button>
                 <button class="nav-item" id="miniGamesTab">
-                    <span class="nav-icon">🎲</span>
+                    <video class="nav-icon-video" autoplay loop muted playsinline disablePictureInPicture>
+                        <source src="assets/videos/dice-icon.webm" type="video/webm">
+                        <source src="assets/videos/dice-icon.mp4" type="video/mp4">
+                        <span class="nav-icon">🎲</span>
+                    </video>
                     <span class="nav-label">Mini Games</span>
                 </button>
+            </div>
+        </div>
+        
+        <!-- Mini Games Popup Modal -->
+        <div class="modal-overlay hidden" id="miniGamesModal">
+            <div class="modal-popup">
+                <div class="dropdown-header">
+                    <span>🎮 Mini Games</span>
+                    <button class="dropdown-close" id="miniGamesCloseBtn">✕</button>
+                </div>
+                <div class="modal-content">
+                    <p>Unlocks at <strong>Level 80!</strong></p>
+                    <p>Keep playing to reach this level and unlock exciting mini games!</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-modal-ok" id="miniGamesOkBtn">OK</button>
+                </div>
             </div>
         </div>
     </div>

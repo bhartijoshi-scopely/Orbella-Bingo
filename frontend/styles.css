@@ -60,25 +60,56 @@ body {
     overflow: hidden;
 }
 
-/* Decorative clouds */
-.welcome-container::before,
+/* Welcome Screen Video Background */
+.welcome-bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+    filter: brightness(0.8) contrast(1.05);
+}
+
+/* Overlay to ensure content is readable */
 .welcome-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, 
+        rgba(135, 206, 235, 0.3) 0%, 
+        rgba(152, 216, 200, 0.4) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Ensure all welcome content appears above video */
+.welcome-badge,
+.game-logo,
+.welcome-character,
+.welcome-buttons,
+.welcome-footer {
+    position: relative;
+    z-index: 2;
+}
+
+/* Decorative cloud */
+.welcome-container::before {
     content: '☁️';
     position: absolute;
     font-size: 4em;
     opacity: 0.6;
     animation: float 6s ease-in-out infinite;
-}
-
-.welcome-container::before {
     top: 10%;
     left: 10%;
-}
-
-.welcome-container::after {
-    top: 20%;
-    right: 15%;
-    animation-delay: 2s;
+    z-index: 2;
 }
 
 @keyframes float {
@@ -400,6 +431,10 @@ body {
     align-items: center;
 }
 
+.modal-popup .dropdown-header {
+    border-radius: 20px 20px 0 0;
+}
+
 .dropdown-close {
     background: transparent;
     border: none;
@@ -419,6 +454,108 @@ body {
 .dropdown-close:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
+}
+
+/* Mini Games Modal Popup */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-popup {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    padding: 40px 30px 20px;
+    text-align: center;
+    font-size: 1.15em;
+    line-height: 1.7;
+    color: #333;
+}
+
+.modal-content p {
+    margin: 12px 0;
+}
+
+.modal-content strong {
+    color: #667eea;
+    font-weight: 900;
+}
+
+.modal-actions {
+    padding: 20px 30px 35px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-modal-ok {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.btn-modal-ok:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.btn-modal-ok:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
 }
 
 .dropdown-item {
@@ -542,37 +679,63 @@ body {
 }
 
 .room-card {
-    background: white;
-    border-radius: 20px;
-    padding: 15px;
-    width: 250px;
-    min-width: 250px;
+    background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 100%);
+    border-radius: 25px;
+    overflow: hidden;
+    width: 280px;
     flex-shrink: 0;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     scroll-snap-align: center;
+    padding: 10px;
+    position: relative;
 }
 
 .room-card:hover:not(.locked) {
     transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
 }
 
 .room-card.locked {
-    opacity: 0.8;
+    opacity: 0.85;
     cursor: not-allowed;
 }
 
 .room-card-image {
-    height: 200px;
-    border-radius: 15px;
+    height: 240px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Room Card Videos */
+.room-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.3s ease;
+    filter: brightness(0.9) contrast(1.1);
+}
+
+.room-card:hover:not(.locked) .room-video {
+    transform: scale(1.08);
+    filter: brightness(1) contrast(1.15);
+}
+
+/* Adjust video on locked cards to show through overlay */
+.room-card.locked .room-video {
+    filter: brightness(0.85) contrast(1.1) grayscale(0.2);
 }
 
 .classic-room {
@@ -614,18 +777,54 @@ body {
 .room-icon {
     font-size: 5em;
     animation: float 3s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
 }
 
 .room-label {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 5px 15px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 0.9em;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 900;
+    font-size: 0.85em;
+    color: white;
+    z-index: 3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Keep Orbella card in original design - DO NOT CHANGE */
+.room-card[data-room="orbella"] {
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.room-card[data-room="orbella"] .room-card-image {
+    margin-bottom: 15px;
+    border: none;
+}
+
+.room-card[data-room="orbella"] .room-card-title {
+    position: static;
+    transform: none;
+    font-size: 1.4em;
     color: #333;
+    text-shadow: none;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+.room-card[data-room="orbella"] .room-card-desc {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
 }
 
 .lock-overlay {
@@ -634,12 +833,14 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
+    z-index: 2;
+    backdrop-filter: blur(2px);
 }
 
 .lock-icon {
@@ -653,17 +854,106 @@ body {
 }
 
 .room-card-title {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #333;
+    position: relative;
+    font-size: 1.4em;
+    font-weight: 900;
+    color: #FFEB3B;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    text-shadow: 
+        -2px -2px 0px #C2185B,
+        2px -2px 0px #C2185B,
+        -2px 2px 0px #C2185B,
+        2px 2px 0px #C2185B,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    font-family: Arial Black, Arial, sans-serif;
+}
+
+/* Individual room title colors */
+.room-card[data-room="classic"] .room-card-title {
+    color: #FF6B9D;
+    text-shadow: 
+        -2px -2px 0px #7B1FA2,
+        2px -2px 0px #7B1FA2,
+        -2px 2px 0px #7B1FA2,
+        2px 2px 0px #7B1FA2,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="adventure"] .room-card-title {
+    color: #FFE66D;
+    text-shadow: 
+        -2px -2px 0px #D84315,
+        2px -2px 0px #D84315,
+        -2px 2px 0px #D84315,
+        2px 2px 0px #D84315,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="space"] .room-card-title {
+    color: #64B5F6;
+    text-shadow: 
+        -2px -2px 0px #1A237E,
+        2px -2px 0px #1A237E,
+        -2px 2px 0px #1A237E,
+        2px 2px 0px #1A237E,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="pirate"] .room-card-title {
+    color: #FFD54F;
+    text-shadow: 
+        -2px -2px 0px #4E342E,
+        2px -2px 0px #4E342E,
+        -2px 2px 0px #4E342E,
+        2px 2px 0px #4E342E,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="candy"] .room-card-title {
+    color: #F8BBD0;
+    text-shadow: 
+        -2px -2px 0px #880E4F,
+        2px -2px 0px #880E4F,
+        -2px 2px 0px #880E4F,
+        2px 2px 0px #880E4F,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="jungle"] .room-card-title {
+    color: #AED581;
+    text-shadow: 
+        -2px -2px 0px #1B5E20,
+        2px -2px 0px #1B5E20,
+        -2px 2px 0px #1B5E20,
+        2px 2px 0px #1B5E20,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="casino"] .room-card-title {
+    color: #FFD700;
+    text-shadow: 
+        -2px -2px 0px #E65100,
+        2px -2px 0px #E65100,
+        -2px 2px 0px #E65100,
+        2px 2px 0px #E65100,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.room-card[data-room="underwater"] .room-card-title {
+    color: #81D4FA;
+    text-shadow: 
+        -2px -2px 0px #01579B,
+        2px -2px 0px #01579B,
+        -2px 2px 0px #01579B,
+        2px 2px 0px #01579B,
+        3px 3px 8px rgba(0, 0, 0, 0.7);
 }
 
 .room-card-desc {
-    font-size: 0.9em;
-    color: #666;
-    text-align: center;
+    display: none;
 }
 
 .nav-arrow {
@@ -700,42 +990,120 @@ body {
 /* Bottom Navigation */
 .bottom-nav {
     display: flex;
-    justify-content: space-around;
-    background: rgba(52, 73, 94, 0.9);
-    padding: 10px;
-    gap: 5px;
+    justify-content: center;
+    align-items: flex-end;
+    background: linear-gradient(180deg, rgba(52, 73, 94, 0.95) 0%, rgba(44, 62, 80, 0.98) 100%);
+    padding: 20px 30px 15px;
+    gap: 20px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .nav-item {
-    background: transparent;
-    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
     cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 10px;
-    transition: background 0.3s ease;
+    padding: 12px 30px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    position: relative;
+    backdrop-filter: blur(10px);
 }
 
 .nav-item:hover {
     background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .nav-item.active {
-    background: rgba(255, 255, 255, 0.3);
-    border-top: 3px solid #FFD93D;
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.25) 0%, rgba(255, 107, 157, 0.25) 100%);
+    border-color: #FFD93D;
+    border-width: 3px;
+    box-shadow: 0 0 25px rgba(255, 217, 61, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+    transform: translateY(-6px);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #FFD93D, transparent);
+    border-radius: 2px;
 }
 
 .nav-icon {
     font-size: 1.5em;
 }
 
+/* Animated Video Icons */
+.nav-icon-video {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    filter: brightness(1.1) contrast(1.15) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: -38px; /* Float above button */
+    margin-bottom: 5px;
+    pointer-events: none; /* Allow clicks to pass through to button */
+    opacity: 0.95;
+}
+
+/* Hide emoji fallback when video loads */
+.nav-icon-video .nav-icon {
+    display: none;
+}
+
+/* Show emoji fallback only if video fails to load */
+.nav-icon-video:not([src]) + .nav-icon {
+    display: block;
+}
+
+.nav-item:hover .nav-icon-video {
+    transform: translateY(-6px) scale(1.08);
+    filter: brightness(1.2) contrast(1.2) saturate(1.3) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+    opacity: 1;
+}
+
+.nav-item.active .nav-icon-video {
+    transform: translateY(-10px) scale(1.12);
+    filter: brightness(1.25) contrast(1.25) saturate(1.4) drop-shadow(0 16px 32px rgba(255, 217, 61, 0.7));
+    animation: navIconBounce 2.5s ease-in-out infinite;
+    opacity: 1;
+}
+
+@keyframes navIconBounce {
+    0%, 100% {
+        transform: translateY(-10px) scale(1.12);
+    }
+    50% {
+        transform: translateY(-14px) scale(1.14);
+    }
+}
+
 .nav-label {
-    font-size: 0.8em;
-    font-weight: bold;
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-label {
+    color: #FFD93D;
+    font-size: 0.95em;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
 }
 
 /* ========================================
