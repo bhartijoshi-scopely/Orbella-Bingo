@@ -83,9 +83,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, 
-        rgba(135, 206, 235, 0.3) 0%, 
-        rgba(152, 216, 200, 0.4) 100%);
+    background: linear-gradient(180deg,
+            rgba(135, 206, 235, 0.3) 0%,
+            rgba(152, 216, 200, 0.4) 100%);
     z-index: 1;
     pointer-events: none;
 }
@@ -525,6 +525,7 @@ body {
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -535,6 +536,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -893,7 +895,7 @@ body {
     color: #FFEB3B;
     text-align: center;
     margin-bottom: 8px;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #C2185B,
         2px -2px 0px #C2185B,
         -2px 2px 0px #C2185B,
@@ -907,7 +909,7 @@ body {
 /* Individual room title colors */
 .room-card[data-room="classic"] .room-card-title {
     color: #FF6B9D;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #7B1FA2,
         2px -2px 0px #7B1FA2,
         -2px 2px 0px #7B1FA2,
@@ -917,7 +919,7 @@ body {
 
 .room-card[data-room="adventure"] .room-card-title {
     color: #FFE66D;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #D84315,
         2px -2px 0px #D84315,
         -2px 2px 0px #D84315,
@@ -927,7 +929,7 @@ body {
 
 .room-card[data-room="space"] .room-card-title {
     color: #64B5F6;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #1A237E,
         2px -2px 0px #1A237E,
         -2px 2px 0px #1A237E,
@@ -937,7 +939,7 @@ body {
 
 .room-card[data-room="pirate"] .room-card-title {
     color: #FFD54F;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #4E342E,
         2px -2px 0px #4E342E,
         -2px 2px 0px #4E342E,
@@ -947,7 +949,7 @@ body {
 
 .room-card[data-room="candy"] .room-card-title {
     color: #F8BBD0;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #880E4F,
         2px -2px 0px #880E4F,
         -2px 2px 0px #880E4F,
@@ -957,7 +959,7 @@ body {
 
 .room-card[data-room="jungle"] .room-card-title {
     color: #AED581;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #1B5E20,
         2px -2px 0px #1B5E20,
         -2px 2px 0px #1B5E20,
@@ -967,7 +969,7 @@ body {
 
 .room-card[data-room="casino"] .room-card-title {
     color: #FFD700;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #E65100,
         2px -2px 0px #E65100,
         -2px 2px 0px #E65100,
@@ -977,7 +979,7 @@ body {
 
 .room-card[data-room="underwater"] .room-card-title {
     color: #81D4FA;
-    text-shadow: 
+    text-shadow:
         -2px -2px 0px #01579B,
         2px -2px 0px #01579B,
         -2px 2px 0px #01579B,
@@ -1087,9 +1089,11 @@ body {
     border-radius: 12px;
     filter: brightness(1.1) contrast(1.15) saturate(1.2) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    margin-top: -38px; /* Float above button */
+    margin-top: -38px;
+    /* Float above button */
     margin-bottom: 5px;
-    pointer-events: none; /* Allow clicks to pass through to button */
+    pointer-events: none;
+    /* Allow clicks to pass through to button */
     opacity: 0.95;
 }
 
@@ -1099,7 +1103,7 @@ body {
 }
 
 /* Show emoji fallback only if video fails to load */
-.nav-icon-video:not([src]) + .nav-icon {
+.nav-icon-video:not([src])+.nav-icon {
     display: block;
 }
 
@@ -1117,9 +1121,12 @@ body {
 }
 
 @keyframes navIconBounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(-10px) scale(1.12);
     }
+
     50% {
         transform: translateY(-14px) scale(1.14);
     }

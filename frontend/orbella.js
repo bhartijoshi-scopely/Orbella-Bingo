@@ -834,6 +834,11 @@ class OrbellaRoom {
         const theme = (this.modalTextArea && this.modalTextArea.value.trim()) || 'Magical bingo background';
         this.closeModal();
 
+        // Show the main interface immediately for the loading screen
+        this.showMainInterface();
+
+        // Start the 3D loading animation
+        this.showLoadingAnimation();
         this.setStatus('Generating video, card, and ball caller...');
 
         try {
@@ -873,11 +878,8 @@ class OrbellaRoom {
             console.log('Ball Caller data:', ballCallerData);
 
             const videoUrls = videoData.asset_urls || [];
-            // Card URLs will now be base64 data URLs with background removed
             const cardUrls = cardData.asset_urls || [];
-            // Keep original URLs as backup
             const originalCardUrls = cardData.original_urls || cardUrls;
-            // Ball caller URLs
             const ballCallerUrls = ballCallerData.asset_urls || [];
             const originalBallCallerUrls = ballCallerData.original_urls || ballCallerUrls;
 
@@ -885,37 +887,26 @@ class OrbellaRoom {
                 // Save to local storage
                 if (videoUrls.length > 0) {
                     this.saveToStorage(this.STORAGE_KEYS.VIDEO_URL, videoUrls[0]);
-                    console.log('Saved video URL to storage');
                 }
                 if (cardUrls.length > 0) {
-                    // Save the bg-removed card (base64 data URL)
                     this.saveToStorage(this.STORAGE_KEYS.CARD_URL, cardUrls[0]);
-                    console.log('Saved card URL to storage (background removed)');
-
-                    // Also save original URL as backup
                     if (originalCardUrls.length > 0 && originalCardUrls[0] !== cardUrls[0]) {
                         this.saveToStorage('orbella_original_card_url', originalCardUrls[0]);
-                        console.log('Saved original card URL as backup');
                     }
                 }
                 if (ballCallerUrls.length > 0) {
-                    // Save the bg-removed ball caller (base64 data URL)
                     this.saveToStorage('orbella_ball_caller_url', ballCallerUrls[0]);
-                    console.log('Saved ball caller URL to storage (background removed)');
-
-                    // Also save original URL as backup
                     if (originalBallCallerUrls.length > 0 && originalBallCallerUrls[0] !== ballCallerUrls[0]) {
                         this.saveToStorage('orbella_original_ball_caller_url', originalBallCallerUrls[0]);
-                        console.log('Saved original ball caller URL as backup');
                     }
                 }
                 this.saveToStorage(this.STORAGE_KEYS.THEME, theme);
 
+                // Stop loading animation
+                this.hideLoadingAnimation();
+
                 // Generate bingo card
                 this.generateBingoCard();
-
-                // Show main interface
-                this.showMainInterface();
 
                 // Setup Three.js scene with ball caller
                 await this.setupThreeJsScene(videoUrls[0], cardUrls[0], ballCallerUrls[0]);
@@ -931,9 +922,241 @@ class OrbellaRoom {
 
         } catch (error) {
             console.error('Generation error:', error);
+            this.hideLoadingAnimation();
             this.setStatus(`Error: ${error.message}`);
             alert(`Generation failed: ${error.message}\n\nMake sure the backend is running.`);
+            this.openModal(); // Re-open modal on failure
         }
+    }
+
+    // === LOADING ANIMATION ===
+
+    showLoadingAnimation() {
+        this.isLoading = true;
+        this.initializeThreeJs(); // Ensure renderer exists
+
+        // Clear scene
+        while (this.scene.children.length > 0) {
+            this.scene.remove(this.scene.children[0]);
+        }
+
+        // Setup Loading Scene
+        this.scene.background = new THREE.Color(0x87CEEB); // Sky blue
+
+        // Use Perspective Camera for 3D scene
+        const aspect = this.renderer.domElement.clientWidth / this.renderer.domElement.clientHeight;
+        this.camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
+        this.camera.position.set(0, 3, 8);
+        this.camera.lookAt(0, 0, 0);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        this.scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(5, 10, 7);
+        this.scene.add(dirLight);
+
+        // Ice Floor
+        const iceGeo = new THREE.CylinderGeometry(8, 8, 0.5, 32);
+        const iceMat = new THREE.MeshStandardMaterial({
+            color: 0xe0f7fa,
+            roughness: 0.1,
+            metalness: 0.1
+        });
+        const ice = new THREE.Mesh(iceGeo, iceMat);
+        ice.position.y = -0.25;
+        this.scene.add(ice);
+
+        // Create Penguins
+        this.penguins = [];
+        for (let i = 0; i < 3; i++) {
+            const penguin = this.createPenguin();
+            // Start position off-screen or on one side
+            penguin.position.set(-4 - (i * 1.5), 0, 0);
+            penguin.rotation.y = Math.PI / 2; // Face right
+
+            // Add some random variation
+            const scale = 0.8 + Math.random() * 0.4;
+            penguin.scale.set(scale, scale, scale);
+
+            this.scene.add(penguin);
+            this.penguins.push({
+                mesh: penguin,
+                speed: 0.03 + Math.random() * 0.02,
+                waddleOffset: Math.random() * Math.PI * 2,
+                baseY: 0
+            });
+        }
+
+        // Add funny loading text overlay
+        this.createLoadingTextOverlay();
+        
+        // Add snow particles for atmosphere
+        this.createSnowParticles();
+
+        // Start animation loop if not running
+        if (!this.animationId) {
+            this.animate();
+        }
+    }
+
+    createPenguin() {
+        const penguin = new THREE.Group();
+
+        // Body (Black Capsule/Cylinder)
+        const bodyGeo = new THREE.CapsuleGeometry(0.3, 0.7, 4, 8);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.5 });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.5;
+        penguin.add(body);
+
+        // Belly (White patch)
+        const bellyGeo = new THREE.CapsuleGeometry(0.23, 0.5, 4, 8);
+        const bellyMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 });
+        const belly = new THREE.Mesh(bellyGeo, bellyMat);
+        belly.position.set(0, 0.45, 0.12);
+        penguin.add(belly);
+
+        // Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.05, 8, 8);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeL.position.set(-0.1, 0.8, 0.22);
+        const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeR.position.set(0.1, 0.8, 0.22);
+
+        // Pupils
+        const pupilGeo = new THREE.SphereGeometry(0.02, 8, 8);
+        const pupilMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const pupilL = new THREE.Mesh(pupilGeo, pupilMat);
+        pupilL.position.set(0, 0, 0.04);
+        eyeL.add(pupilL);
+        const pupilR = new THREE.Mesh(pupilGeo, pupilMat);
+        pupilR.position.set(0, 0, 0.04);
+        eyeR.add(pupilR);
+
+        penguin.add(eyeL);
+        penguin.add(eyeR);
+
+        // Beak (Orange Cone)
+        const beakGeo = new THREE.ConeGeometry(0.08, 0.2, 8);
+        const beakMat = new THREE.MeshStandardMaterial({ color: 0xff9800 });
+        const beak = new THREE.Mesh(beakGeo, beakMat);
+        beak.rotation.x = Math.PI / 2;
+        beak.position.set(0, 0.7, 0.35);
+        penguin.add(beak);
+
+        // Wings
+        const wingGeo = new THREE.CapsuleGeometry(0.1, 0.4, 4, 8);
+        const wingMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+        const wingL = new THREE.Mesh(wingGeo, wingMat);
+        wingL.position.set(-0.35, 0.5, 0);
+        wingL.rotation.z = Math.PI / 8;
+        const wingR = new THREE.Mesh(wingGeo, wingMat);
+        wingR.position.set(0.35, 0.5, 0);
+        wingR.rotation.z = -Math.PI / 8;
+        penguin.add(wingL);
+        penguin.add(wingR);
+
+        // Feet
+        const footGeo = new THREE.BoxGeometry(0.2, 0.1, 0.3);
+        const footMat = new THREE.MeshStandardMaterial({ color: 0xff9800 });
+        const footL = new THREE.Mesh(footGeo, footMat);
+        footL.position.set(-0.15, 0.05, 0.1);
+        const footR = new THREE.Mesh(footGeo, footMat);
+        footR.position.set(0.15, 0.05, 0.1);
+        penguin.add(footL);
+        penguin.add(footR);
+
+        return penguin;
+    }
+
+    createSnowParticles() {
+        const particleCount = 200;
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            positions.push(
+                (Math.random() - 0.5) * 20, // x
+                Math.random() * 10,         // y
+                (Math.random() - 0.5) * 20  // z
+            );
+        }
+
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+        this.snowSystem = new THREE.Points(geometry, material);
+        this.scene.add(this.snowSystem);
+    }
+
+    createLoadingTextOverlay() {
+        const container = document.getElementById('orbellaCanvas');
+        if (!container) return;
+
+        // Remove existing loading text if any
+        const existingText = container.querySelector('.orbella-loading-text');
+        if (existingText) existingText.remove();
+
+        // Create the funny loading text overlay
+        const textOverlay = document.createElement('div');
+        textOverlay.className = 'orbella-loading-text';
+        textOverlay.innerHTML = `
+            <div class="loading-main-text">Your generation is on the way! 🐧</div>
+            <div class="loading-sub-text">Our penguin team is working hard...</div>
+        `;
+        textOverlay.style.cssText = `
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            text-align: center;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            pointer-events: none;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.9);
+        `;
+
+        // Style the main text
+        const mainTextStyle = `
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        `;
+
+        // Style the sub text
+        const subTextStyle = `
+            font-size: 1.2em;
+            color: #e5e7eb;
+            font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        `;
+
+
+        // Apply styles to text elements
+        textOverlay.querySelector('.loading-main-text').style.cssText = mainTextStyle;
+        textOverlay.querySelector('.loading-sub-text').style.cssText = subTextStyle;
+
+        container.style.position = 'relative';
+        container.appendChild(textOverlay);
+    }
+
+    hideLoadingAnimation() {
+        this.isLoading = false;
+        this.penguins = null;
+        this.snowSystem = null;
+        
+        // Remove the loading text overlay
+        const container = document.getElementById('orbellaCanvas');
+        if (container) {
+            const loadingText = container.querySelector('.orbella-loading-text');
+            if (loadingText) loadingText.remove();
+        }
+        
+        // The setupThreeJsScene method will clear and reset the scene
     }
 
     // === UI MANAGEMENT ===
@@ -980,11 +1203,59 @@ class OrbellaRoom {
             this.mainEl.classList.remove('full-video');
         }
 
-        // Clear overlays including ball caller
+        // Clear overlays including ball caller and loading text
         const container = document.getElementById('orbellaCanvas');
         if (container) {
-            const overlays = container.querySelectorAll('.bingo-card-overlay, .ball-caller-overlay, .orbella-play-button');
+            const overlays = container.querySelectorAll('.bingo-card-overlay, .ball-caller-overlay, .orbella-play-button, .orbella-loading-text');
             overlays.forEach(overlay => overlay.remove());
+        }
+    }
+
+    animate() {
+        this.animationId = requestAnimationFrame(() => this.animate());
+
+        if (this.isLoading) {
+            // Animate Loading Scene
+            const time = Date.now() * 0.005;
+
+            if (this.penguins) {
+                this.penguins.forEach(p => {
+                    // Move forward
+                    p.mesh.position.x += p.speed;
+
+                    // Reset if too far
+                    if (p.mesh.position.x > 5) {
+                        p.mesh.position.x = -5;
+                    }
+
+                    // Waddle animation (rotate z)
+                    p.mesh.rotation.z = Math.sin(time * 3 + p.waddleOffset) * 0.1;
+
+                    // Hop animation (y position)
+                    p.mesh.position.y = Math.abs(Math.sin(time * 3 + p.waddleOffset)) * 0.1;
+                });
+            }
+
+            if (this.snowSystem) {
+                const positions = this.snowSystem.geometry.attributes.position.array;
+                for (let i = 1; i < positions.length; i += 3) {
+                    positions[i] -= 0.05; // Fall down
+                    if (positions[i] < 0) {
+                        positions[i] = 10; // Reset to top
+                    }
+                }
+                this.snowSystem.geometry.attributes.position.needsUpdate = true;
+            }
+
+        } else {
+            // Normal Video Scene Animation
+            if (this.videoTexture) {
+                this.videoTexture.needsUpdate = true;
+            }
+        }
+
+        if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera);
         }
     }
 }
@@ -1007,3 +1278,4 @@ window.leaveOrbellaRoom = function () {
         orbellaRoom.cleanup();
     }
 };
+
