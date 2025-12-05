@@ -57,7 +57,9 @@ def get_card_prompt(theme: str) -> str:
 
     BACKGROUND:
     Solid #00FF00 bright green chroma key background. 
-    No shadows, no gradients, no patterns on the background. Flat color only."""
+    No shadows, no gradients, no patterns on the background. Flat color only.
+    
+    DO NOT add more that 5 columns or rows to the grid in any cost. It's STRCITLY restricted to 5x5 matrix grid."""
         )
     return base.replace("{theme}", theme or "classic")
 
