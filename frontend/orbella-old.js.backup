@@ -1,0 +1,400 @@
+'use strict';
+
+// Orbella room controller
+(function () {
+  const statusEl = document.getElementById('orbellaStatus');
+  const mainEl = document.getElementById('orbellaMain');
+  const modalEl = document.getElementById('orbellaModal');
+  const modalCloseBtn = document.getElementById('orbellaModalClose');
+  const modalGenerateBtn = document.getElementById('orbellaModalGenerate');
+  const modalGenerateCardBtn = document.getElementById('orbellaModalGenerateCard');
+  const modalTextArea = document.getElementById('orbellaModalText');
+
+  let renderer = null;
+  let scene = null;
+  let camera = null;
+  let mesh = null;
+  let videoTex = null;
+  let videoEl = null;
+  let animationId = null;
+
+  function setStatus(text) {
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  function openModal() {
+    if (modalEl) modalEl.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    if (modalEl) modalEl.classList.add('hidden');
+  }
+
+  function ensureThreeScene() {
+    if (renderer) return;
+    
+    const container = document.getElementById('orbellaCanvas');
+    if (!container) return;
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setClearColor(0x000000);
+    
+    container.innerHTML = '';
+    container.appendChild(renderer.domElement);
+
+    scene = new THREE.Scene();
+    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const geo = new THREE.PlaneGeometry(2, 2);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+  }
+
+  function handleResize() {
+    if (!renderer) return;
+    const container = document.getElementById('orbellaCanvas');
+    if (!container) return;
+    
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    
+    renderer.setSize(w, h, false);
+    
+    if (camera && camera.isOrthographicCamera) {
+      const aspect = w / h;
+      camera.left = -aspect;
+      camera.right = aspect;
+      camera.updateProjectionMatrix();
+    }
+  }
+
+  function createVideoTexture() {
+    if (!videoEl || videoTex) return;
+    
+    try {
+      videoTex = new THREE.VideoTexture(videoEl);
+      videoTex.minFilter = THREE.LinearFilter;
+      videoTex.magFilter = THREE.LinearFilter;
+      videoTex.flipY = true; // Fix upside-down video
+      videoTex.needsUpdate = true;
+      
+      if (mesh) {
+        const videoMaterial = new THREE.MeshBasicMaterial({ 
+          map: videoTex,
+          toneMapped: false 
+        });
+        mesh.material.dispose();
+        mesh.material = videoMaterial;
+      }
+      
+      if (!animationId) {
+        animate();
+      }
+    } catch (error) {
+      console.error('Error creating video texture:', error);
+      setStatus('Texture error');
+    }
+  }
+
+  function animate() {
+    animationId = requestAnimationFrame(animate);
+    if (videoTex) videoTex.needsUpdate = true;
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera);
+    }
+  }
+
+  async function generateFromTheme(theme) {
+    const base = window.ORBELLA_API_BASE || 'http://127.0.0.1:8000';
+    setStatus('Generating video and card...');
+
+    try {
+      // Call both APIs simultaneously
+      const [videoResponse, cardResponse] = await Promise.all([
+        fetch(base + '/scenario/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ theme })
+        }),
+        fetch(base + '/scenario/generate-card', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ theme })
+        })
+      ]);
+
+      if (!videoResponse.ok || !cardResponse.ok) {
+        throw new Error('Generation failed');
+      }
+
+      const [videoData, cardData] = await Promise.all([
+        videoResponse.json(),
+        cardResponse.json()
+      ]);
+
+      const videoUrls = (videoData.asset_urls || []);
+      const cardUrls = (cardData.asset_urls || []);
+
+      if (videoUrls.length > 0) {
+        await playVideo(videoUrls[0]);
+        
+        // Show card on top of video if available
+        if (cardUrls.length > 0) {
+          displayCardOnVideo(cardUrls[0]);
+          setStatus(`Video & Card generated - Theme: "${theme}"`);
+        } else {
+          setStatus(`Video generated - Theme: "${theme}"`);
+        }
+      } else if (cardUrls.length > 0) {
+        displayCardImage(cardUrls[0]);
+        setStatus(`Card generated - Theme: "${theme}"`);
+      } else {
+        throw new Error('No assets generated');
+      }
+
+    } catch (e) {
+      console.error('Generation error:', e);
+      setStatus(`Error: ${e.message}`);
+      alert(`Generation failed: ${e.message}\n\nMake sure the backend is running.`);
+    }
+  }
+
+  function displayCardImage(imageUrl) {
+    // Create an image element to display the card
+    const container = document.getElementById('orbellaCanvas');
+    if (!container) return;
+
+    // Clear existing content
+    container.innerHTML = '';
+    
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+    img.style.borderRadius = '8px';
+    
+    container.appendChild(img);
+
+    // Show the main area
+    if (mainEl) {
+      mainEl.classList.remove('hidden');
+      mainEl.classList.add('full-video');
+    }
+  }
+
+  function displayCardOnVideo(cardUrl) {
+    const container = document.getElementById('orbellaCanvas');
+    if (!container) return;
+
+    // Add overlay to the parent container instead to avoid canvas clearing it  
+    const parent = container.parentElement;
+    if (!parent) return;
+
+    // Ensure parent has relative positioning
+    parent.style.position = 'relative';
+
+    // Remove any existing card overlay
+    const existingCard = parent.querySelector('.card-overlay');
+    if (existingCard) existingCard.remove();
+
+    // Create card overlay
+    const cardOverlay = document.createElement('div');
+    cardOverlay.className = 'card-overlay';
+    cardOverlay.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 400px;
+      z-index: 1001;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      overflow: hidden;
+      pointer-events: auto;
+    `;
+
+    const cardImg = document.createElement('img');
+    cardImg.src = cardUrl;
+    cardImg.style.cssText = `
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    `;
+
+    cardOverlay.appendChild(cardImg);
+    parent.appendChild(cardOverlay);
+    
+    console.log('Card overlay added:', cardUrl);
+  }
+
+  async function playVideo(url) {
+    // Show the main area
+    if (mainEl) {
+      mainEl.classList.remove('hidden');
+      mainEl.classList.add('full-video');
+    }
+    
+    // Ensure Three.js scene is ready
+    ensureThreeScene();
+    if (!renderer || !scene || !mesh) return;
+
+    // Clean up existing video
+    if (videoEl) {
+      try {
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        videoEl.load();
+      } catch (_) {}
+    }
+
+    // Create video element
+    videoEl = document.createElement('video');
+    videoEl.src = url;
+    videoEl.crossOrigin = 'anonymous';
+    videoEl.loop = true;
+    videoEl.muted = true;
+    videoEl.playsInline = true;
+    videoEl.controls = false;
+
+    videoEl.addEventListener('canplay', () => {
+      createVideoTexture();
+    });
+
+    videoEl.addEventListener('error', (ev) => {
+      console.error('Video element error', ev, videoEl.error);
+      setStatus('Video load error');
+    });
+
+    // Resize after a brief delay
+    setTimeout(() => {
+      handleResize();
+    }, 100);
+
+    // Try to play video
+    try {
+      await videoEl.play();
+      setStatus('Playing video');
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        setStatus('Click to play video');
+        createPlayButton();
+      } else {
+        console.error('Video play failed:', err);
+        setStatus('Video play failed');
+      }
+    }
+  }
+
+  function createPlayButton() {
+    const container = document.getElementById('orbellaCanvas');
+    if (!container) return;
+
+    // Remove existing play button if any
+    const existingBtn = container.querySelector('.play-button');
+    if (existingBtn) existingBtn.remove();
+
+    const playBtn = document.createElement('div');
+    playBtn.className = 'play-button';
+    playBtn.innerHTML = '▶️ Click to Play Video';
+    playBtn.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      z-index: 1000;
+      user-select: none;
+    `;
+
+    playBtn.addEventListener('click', async () => {
+      try {
+        if (videoEl) {
+          await videoEl.play();
+          console.log('Video play() successful after user interaction');
+          setStatus('Playing video');
+          playBtn.remove();
+        }
+      } catch (err) {
+        console.error('Manual video play failed:', err);
+        setStatus('Video play failed');
+      }
+    });
+
+    container.style.position = 'relative';
+    container.appendChild(playBtn);
+  }
+
+  function attachModalHandlers() {
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', () => {
+        closeModal();
+      });
+    }
+
+    // Single Generate button that calls both APIs
+    if (modalGenerateBtn) {
+      modalGenerateBtn.addEventListener('click', async () => {
+        const theme = (modalTextArea && modalTextArea.value.trim()) || 'Magical bingo background';
+        closeModal();
+        await generateFromTheme(theme);
+      });
+    }
+
+    // Keep card button handler for backward compatibility (if it exists)
+    if (modalGenerateCardBtn) {
+      modalGenerateCardBtn.addEventListener('click', async () => {
+        const theme = (modalTextArea && modalTextArea.value.trim()) || 'Magical bingo card';
+        closeModal();
+        await generateFromTheme(theme); // Now calls both APIs
+      });
+    }
+  }
+
+  // Lifecycle hooks used by main.js
+  window.enterOrbellaRoom = function () {
+    if (mainEl) {
+      mainEl.classList.add('hidden');
+      mainEl.classList.remove('full-video');
+    }
+    openModal();
+    setStatus('Ready');
+  };
+
+  window.leaveOrbellaRoom = function () {
+    closeModal();
+    if (mainEl) {
+      mainEl.classList.add('hidden');
+      mainEl.classList.remove('full-video');
+    }
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+    if (videoEl) {
+      videoEl.pause();
+      videoEl.removeAttribute('src');
+      videoEl.load();
+      videoEl = null;
+    }
+    if (videoTex) {
+      videoTex.dispose();
+      videoTex = null;
+    }
+  };
+
+  attachModalHandlers();
+})();

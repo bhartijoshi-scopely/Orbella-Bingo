@@ -82,8 +82,15 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .welcome-badge {
@@ -104,8 +111,15 @@ body {
 }
 
 @keyframes bounce {
-    0%, 100% { transform: rotate(-15deg) translateY(0); }
-    50% { transform: rotate(-15deg) translateY(-10px); }
+
+    0%,
+    100% {
+        transform: rotate(-15deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-15deg) translateY(-10px);
+    }
 }
 
 .game-logo {
@@ -122,13 +136,13 @@ body {
     font-size: 5em;
     font-weight: 900;
     letter-spacing: 10px;
-    background: linear-gradient(45deg, 
-        #FF6B9D 0%, 
-        #4ECDC4 20%, 
-        #FFE66D 40%, 
-        #FF6B9D 60%,
-        #C44569 80%,
-        #9B59B6 100%);
+    background: linear-gradient(45deg,
+            #FF6B9D 0%,
+            #4ECDC4 20%,
+            #FFE66D 40%,
+            #FF6B9D 60%,
+            #C44569 80%,
+            #9B59B6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -140,15 +154,22 @@ body {
     font-size: 3.5em;
     font-weight: 900;
     color: #FFD93D;
-    text-shadow: 
+    text-shadow:
         3px 3px 0 #FF6B9D,
         6px 6px 0 rgba(0, 0, 0, 0.2);
     margin-top: -20px;
 }
 
 @keyframes rainbow {
-    0%, 100% { filter: hue-rotate(0deg); }
-    50% { filter: hue-rotate(20deg); }
+
+    0%,
+    100% {
+        filter: hue-rotate(0deg);
+    }
+
+    50% {
+        filter: hue-rotate(20deg);
+    }
 }
 
 .welcome-character {
@@ -161,9 +182,19 @@ body {
 }
 
 @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
 }
 
 .welcome-buttons {
@@ -315,7 +346,8 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.coin-icon, .power-icon {
+.coin-icon,
+.power-icon {
     font-size: 1.2em;
 }
 
@@ -383,6 +415,7 @@ body {
         opacity: 0;
         transform: translateY(-10px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -801,11 +834,30 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-.called-ball[data-letter="B"] { border-color: #FF6B9D; background: white; }
-.called-ball[data-letter="I"] { border-color: #4ECDC4; background: white; }
-.called-ball[data-letter="N"] { border-color: #FFE66D; background: white; }
-.called-ball[data-letter="G"] { border-color: #95E1D3; background: white; }
-.called-ball[data-letter="O"] { border-color: #C44569; background: white; }
+.called-ball[data-letter="B"] {
+    border-color: #FF6B9D;
+    background: white;
+}
+
+.called-ball[data-letter="I"] {
+    border-color: #4ECDC4;
+    background: white;
+}
+
+.called-ball[data-letter="N"] {
+    border-color: #FFE66D;
+    background: white;
+}
+
+.called-ball[data-letter="G"] {
+    border-color: #95E1D3;
+    background: white;
+}
+
+.called-ball[data-letter="O"] {
+    border-color: #C44569;
+    background: white;
+}
 
 .called-ball.current {
     animation: pulse 1s ease-in-out infinite;
@@ -972,8 +1024,16 @@ body {
 }
 
 @keyframes winningTile {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
 }
 
 .card-controls {
@@ -1034,7 +1094,7 @@ body {
     font-size: 4em;
     font-weight: 900;
     color: #FFD93D;
-    text-shadow: 
+    text-shadow:
         3px 3px 0 #FF6B9D,
         6px 6px 0 #C44569,
         9px 9px 20px rgba(0, 0, 0, 0.5);
@@ -1274,8 +1334,13 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
@@ -1291,8 +1356,15 @@ body {
 }
 
 @keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .modal-content h2 {
@@ -1303,8 +1375,15 @@ body {
 }
 
 @keyframes bounce-modal {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .win-message {
@@ -1330,6 +1409,12 @@ body {
     color: white;
 }
 
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    margin-left: 10px;
+}
+
 /* Confetti Animation */
 .confetti-container {
     position: absolute;
@@ -1351,8 +1436,15 @@ body {
 }
 
 @keyframes confettiFall {
-    0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(600px) rotate(720deg); opacity: 0; }
+    0% {
+        transform: translateY(-100%) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(600px) rotate(720deg);
+        opacity: 0;
+    }
 }
 
 /* ========================================
@@ -1360,8 +1452,15 @@ body {
    ======================================== */
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 /* ========================================
@@ -1373,13 +1472,13 @@ body {
         flex-direction: column;
         overflow-y: auto;
     }
-    
+
     .bingo-section,
     .chat-section {
         flex: none;
         width: 100%;
     }
-    
+
     .room-cards {
         flex-direction: column;
     }
@@ -1389,15 +1488,15 @@ body {
     .logo-bingo {
         font-size: 3em;
     }
-    
+
     .logo-bash {
         font-size: 2em;
     }
-    
+
     .room-card {
         width: 200px;
     }
-    
+
     .bingo-section {
         flex: 0 0 300px;
     }
@@ -1432,8 +1531,15 @@ body {
 }
 
 @keyframes confettiFall3d {
-    0% { transform: translateY(-10%) rotateX(0) rotateY(0) translateZ(0); opacity: 1; }
-    100% { transform: translateY(110vh) rotateX(720deg) rotateY(540deg) translateZ(0); opacity: 0; }
+    0% {
+        transform: translateY(-10%) rotateX(0) rotateY(0) translateZ(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) rotateX(720deg) rotateY(540deg) translateZ(0);
+        opacity: 0;
+    }
 }
 
 .win-3d-label {
@@ -1445,18 +1551,28 @@ body {
     font-weight: 900;
     letter-spacing: 4px;
     color: #fff;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     background: linear-gradient(90deg, #ffd166, #ef476f, #06d6a0, #118ab2);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: winLabelPop 0.6s cubic-bezier(.2,1.4,.3,1) forwards;
+    animation: winLabelPop 0.6s cubic-bezier(.2, 1.4, .3, 1) forwards;
 }
 
 @keyframes winLabelPop {
-    0% { transform: translate(-50%, -50%) scale(0.4) rotateX(20deg); opacity: 0; }
-    60% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1); }
+    0% {
+        transform: translate(-50%, -50%) scale(0.4) rotateX(20deg);
+        opacity: 0;
+    }
+
+    60% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 /* ========================================
@@ -1465,33 +1581,91 @@ body {
 .orbella-container {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+    background: #000000;
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
 
 .orbella-top-bar {
     background: transparent;
-    padding: 8px 12px;
+    backdrop-filter: none;
+    padding: 15px;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #e5e7eb;
+    align-items: flex-start;
+    gap: 10px;
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    z-index: 20;
+    z-index: 2000;
+    border: none;
+    box-shadow: none;
+}
+
+.orbella-dropdown-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orbella-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.orbella-dropdown-content {
+    position: absolute;
+    top: 60px;
+    left: 15px;
+    background: linear-gradient(180deg,
+            rgba(30, 41, 59, 0.95) 0%,
+            rgba(30, 41, 59, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    min-width: 300px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.orbella-dropdown-content.hidden {
+    display: none !important;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .orbella-status {
-    margin-left: auto;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 6px 12px;
-    border-radius: 9999px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    padding: 8px 16px;
+    border-radius: 20px;
     font-weight: 600;
     font-size: 0.9em;
+    color: #e0e7ff;
+    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
 }
 
 .orbella-main {
@@ -1586,20 +1760,50 @@ body {
 .video-box {
     width: 100%;
     height: 100%;
-    background: #0b1020;
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #000000;
+    border-radius: 0;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 }
 
 .video-box canvas {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto !important;
+    height: auto !important;
     display: block;
+    object-fit: contain;
 }
+
+/* Ensure top bar stays visible in full-video mode */
+.orbella-main.full-video~.orbella-top-bar,
+.orbella-container .orbella-top-bar {
+    position: absolute;
+    z-index: 2000;
+}
+
+.orbella-main.full-video .video-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.orbella-main.full-video .video-box canvas {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
 
 /* Orbella Modal */
 .orbella-modal {
@@ -1620,9 +1824,9 @@ body {
     width: 520px;
     max-width: 90vw;
     background: #111827;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     color: #e5e7eb;
 }
@@ -1632,7 +1836,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .orbella-modal-title {
@@ -1660,7 +1864,7 @@ body {
    ======================================== */
 #gameScreen.game-compact .game-board-container {
     background:
-        radial-gradient(1200px 600px at 50% 28%, rgba(255,255,255,0.35), rgba(0,0,0,0)),
+        radial-gradient(1200px 600px at 50% 28%, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0)),
         linear-gradient(180deg, #eaf6ff 0%, #f7ecff 55%, #fdeff5 100%);
 }
 
@@ -1680,8 +1884,8 @@ body {
     width: 58px;
     height: 58px;
     background: radial-gradient(circle at 30% 30%, #ffffff, #eef2f7);
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12) inset, 0 6px 16px rgba(0,0,0,0.16);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) inset, 0 6px 16px rgba(0, 0, 0, 0.16);
 }
 
 #gameScreen.game-compact .called-ball .ball-letter,
@@ -1762,36 +1966,55 @@ body {
     border-radius: 10px;
     color: #263238;
     text-shadow: none;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-#gameScreen.game-compact .bingo-letter:nth-child(1) { background: linear-gradient(180deg, #ffd89a 0%, #fbbf24 100%); color: #3a2e00; }
-#gameScreen.game-compact .bingo-letter:nth-child(2) { background: linear-gradient(180deg, #cfe8ff 0%, #93c5fd 100%); color: #0b254a; }
-#gameScreen.game-compact .bingo-letter:nth-child(3) { background: linear-gradient(180deg, #e6d7ff 0%, #c4b5fd 100%); color: #2e1065; }
-#gameScreen.game-compact .bingo-letter:nth-child(4) { background: linear-gradient(180deg, #ffd0dc 0%, #fda4af 100%); color: #49111c; }
-#gameScreen.game-compact .bingo-letter:nth-child(5) { background: linear-gradient(180deg, #d6fbe6 0%, #86efac 100%); color: #064e3b; }
+#gameScreen.game-compact .bingo-letter:nth-child(1) {
+    background: linear-gradient(180deg, #ffd89a 0%, #fbbf24 100%);
+    color: #3a2e00;
+}
+
+#gameScreen.game-compact .bingo-letter:nth-child(2) {
+    background: linear-gradient(180deg, #cfe8ff 0%, #93c5fd 100%);
+    color: #0b254a;
+}
+
+#gameScreen.game-compact .bingo-letter:nth-child(3) {
+    background: linear-gradient(180deg, #e6d7ff 0%, #c4b5fd 100%);
+    color: #2e1065;
+}
+
+#gameScreen.game-compact .bingo-letter:nth-child(4) {
+    background: linear-gradient(180deg, #ffd0dc 0%, #fda4af 100%);
+    color: #49111c;
+}
+
+#gameScreen.game-compact .bingo-letter:nth-child(5) {
+    background: linear-gradient(180deg, #d6fbe6 0%, #86efac 100%);
+    color: #064e3b;
+}
 
 #gameScreen.game-compact .bingo-card {
     padding: 12px;
     gap: 6px;
     border-radius: 18px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    box-shadow: 0 14px 32px rgba(15,23,42,0.18);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
     border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
 #gameScreen.game-compact .bingo-tile {
     border-radius: 14px;
-    border: 1px solid rgba(148,163,184,0.45);
+    border: 1px solid rgba(148, 163, 184, 0.45);
     background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-    box-shadow: 0 5px 14px rgba(15,23,42,0.12);
+    box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
     color: #0f172a;
     font-size: 1.18em;
 }
 
 #gameScreen.game-compact .bingo-tile.marked {
     background: linear-gradient(180deg, #ff7ac4 0%, #ff3d8b 100%);
-    box-shadow: 0 8px 0 #7c2852, 0 8px 24px rgba(0,0,0,0.35);
+    box-shadow: 0 8px 0 #7c2852, 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 #gameScreen.game-compact .card-indicator {
@@ -1801,3 +2024,181 @@ body {
     margin-top: 8px;
 }
 
+/* ========================================
+   ORBELLA ROOM - ENHANCED STYLES
+   ======================================== */
+
+.orbella-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.orbella-controls .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.orbella-controls .btn-secondary {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.9) 0%, rgba(124, 58, 237, 0.9) 100%);
+    color: white;
+    border: 1px solid rgba(167, 139, 250, 0.5);
+}
+
+.orbella-controls .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.orbella-controls .btn:active {
+    transform: translateY(0);
+}
+
+
+
+/* Interactive Bingo Card Overlay Styles */
+.bingo-card-overlay {
+    /* Force disable any backdrop effects */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+}
+
+/* Ball Caller Overlay Styles */
+.ball-caller-overlay {
+    /* Force disable any backdrop effects */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+}
+
+.bingo-grid {
+    font-family: 'Arial', sans-serif;
+}
+
+.bingo-grid.interactive {
+    position: relative;
+    z-index: 10;
+}
+
+.bingo-cell {
+    position: relative;
+    min-height: 60px;
+}
+
+.interactive-cell {
+    position: relative;
+    min-height: 60px;
+    transition: all 0.2s ease;
+}
+
+.interactive-cell:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+}
+
+.interactive-cell.marked {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.interactive-cell .checkmark {
+    pointer-events: none;
+}
+
+/* Animation for checkmark appearance */
+@keyframes markAppear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Enhanced hover effects */
+.interactive-cell:not(.marked):hover {
+    background: rgba(243, 244, 246, 0.95) !important;
+    border-color: rgba(79, 70, 229, 0.6);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+}
+
+/* FREE tile special styling */
+.interactive-cell[data-value="FREE"] {
+    background: rgba(251, 191, 36, 0.9) !important;
+    color: white !important;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Play button for video */
+.orbella-play-button {
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.orbella-play-button:hover {
+    background: rgba(0, 0, 0, 0.9) !important;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Status indicator */
+.orbella-status {
+    transition: all 0.3s ease;
+}
+
+/* Responsive adjustments for Orbella room */
+@media (max-width: 1024px) {
+    .bingo-card-overlay {
+        width: 90vw;
+        max-width: 380px;
+        height: auto;
+        aspect-ratio: 3/4;
+    }
+}
+
+@media (max-width: 768px) {
+    .orbella-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .orbella-controls .btn {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    .bingo-card-overlay {
+        width: 95vw;
+        max-width: 340px;
+        height: auto;
+        aspect-ratio: 3/4;
+    }
+
+    .bingo-cell {
+        min-height: 50px;
+        font-size: 16px;
+    }
+}

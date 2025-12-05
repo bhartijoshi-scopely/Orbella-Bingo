@@ -151,3 +151,91 @@ class ScenarioVideoGenerator:
         if not job_id:
             return None
         return self.poll_job(job_id)
+
+class ScenarioImageGenerator:
+    def __init__(self, api_key: str, api_secret: str, model_id: str = "model_google-gemini-pro-image-t2i"):
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self.model_id = model_id
+        self.generate_url = f"https://api.cloud.scenario.com/v1/generate/custom/{self.model_id}"
+        self.jobs_base_url = "https://api.cloud.scenario.com/v1/jobs"
+
+    def start_generation(self, prompt: str, aspect_ratio: str = "9:16", resolution: str = "1K"):
+        payload = {
+            "prompt": prompt,
+            "aspectRatio": aspect_ratio,
+            "resolution": resolution,
+            "useGoogleSearch": False,
+            "seed": None,
+        }
+        r = requests.post(
+            self.generate_url,
+            headers={"Content-Type": "application/json"},
+            json=payload,
+            auth=(self.api_key, self.api_secret),
+        )
+        if r.status_code == 200:
+            data = r.json()
+            job = data.get("job") or {}
+            job_id = job.get("jobId")
+            return job_id
+        print(f"Image generation error: {r.status_code} - {r.text}")
+        return None
+
+    def poll_job(self, job_id: str):
+        polling_url = f"{self.jobs_base_url}/{job_id}"
+        status = "queued"
+        while status not in ["success", "failure", "canceled"]:
+            time.sleep(3)
+            resp = requests.get(polling_url, auth=(self.api_key, self.api_secret))
+            if resp.status_code != 200:
+                print(f"Error polling image job: {resp.status_code} - {resp.text}")
+                return None
+            data = resp.json()
+            job = data.get("job") or {}
+            status = job.get("status")
+            if status in ["success", "failure", "canceled"]:
+                return data
+        return None
+
+    def generate_image(self, prompt: str, aspect_ratio: str = "9:16", resolution: str = "1K"):
+        job_id = self.start_generation(prompt=prompt, aspect_ratio=aspect_ratio, resolution=resolution)
+        if not job_id:
+            return None
+        return self.poll_job(job_id)
+
+    def get_asset_url(self, asset_id: str):
+        """Try to fetch a directly usable URL for the given image asset."""
+        assets_base_url = "https://api.cloud.scenario.com/v1/assets"
+
+        # Prefer direct download endpoint if it responds with a redirect or content
+        download_url = f"{assets_base_url}/{asset_id}/download"
+        try:
+            head = requests.head(download_url, auth=(self.api_key, self.api_secret), allow_redirects=True)
+            if head.status_code in (200, 302, 303) and head.headers.get("Location"):
+                return head.headers["Location"]
+            if head.status_code == 200:
+                return download_url
+        except Exception:
+            pass
+
+        # Fallback: fetch metadata to get a signed URL
+        meta_url = f"{assets_base_url}/{asset_id}"
+        meta = requests.get(meta_url, auth=(self.api_key, self.api_secret))
+        if meta.status_code == 200:
+            data = meta.json()
+            candidates = []
+            for key in ("downloadUrl", "url", "signedUrl"):
+                if isinstance(data, dict) and data.get(key):
+                    candidates.append(data.get(key))
+            for node_key in ("asset", "data", "result", "file"):
+                node = data.get(node_key) if isinstance(data, dict) else None
+                if isinstance(node, dict):
+                    for key in ("downloadUrl", "url", "signedUrl"):
+                        if node.get(key):
+                            candidates.append(node.get(key))
+            for u in candidates:
+                if isinstance(u, str) and u.startswith("http"):
+                    return u
+        return None
+        
