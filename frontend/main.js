@@ -121,8 +121,11 @@ function setupEventListeners() {
     if (playWithFriendsBtn) {
         playWithFriendsBtn.addEventListener('click', () => {
             audio.playClick();
-            alert('Facebook login would go here! For now, proceeding as guest...');
-            showScreen('room');
+            // Show funny friends modal
+            const friendsModal = document.getElementById('friendsModal');
+            if (friendsModal) {
+                friendsModal.classList.remove('hidden');
+            }
         });
     }
     
@@ -130,6 +133,38 @@ function setupEventListeners() {
         playAsGuestBtn.addEventListener('click', () => {
             audio.playClick();
             showScreen('room');
+        });
+    }
+    
+    // Friends Modal Close Buttons
+    const friendsModal = document.getElementById('friendsModal');
+    const friendsCloseBtn = document.getElementById('friendsCloseBtn');
+    const friendsOkBtn = document.getElementById('friendsOkBtn');
+    
+    if (friendsCloseBtn) {
+        friendsCloseBtn.addEventListener('click', () => {
+            if (!isMuted) audio.playClick();
+            friendsModal.classList.add('hidden');
+            showScreen('room'); // Redirect to room screen
+        });
+    }
+    
+    if (friendsOkBtn) {
+        friendsOkBtn.addEventListener('click', () => {
+            if (!isMuted) audio.playClick();
+            friendsModal.classList.add('hidden');
+            showScreen('room'); // Redirect to room screen
+        });
+    }
+    
+    // Close modal on overlay click and redirect
+    if (friendsModal) {
+        friendsModal.addEventListener('click', (e) => {
+            if (e.target === friendsModal) {
+                if (!isMuted) audio.playClick();
+                friendsModal.classList.add('hidden');
+                showScreen('room'); // Redirect to room screen
+            }
         });
     }
     
@@ -259,8 +294,8 @@ function setupTabSystem() {
             whatsHotContent.classList.remove('hidden');
             bingoRoomsContent.classList.add('hidden');
             
-            // Show arrows so user can navigate between rooms
-            updateArrowVisibility(true);
+            // Hide arrows for What's Hot (only 3 cards, no scrolling needed)
+            updateArrowVisibility(false);
             
             // Re-setup room cards for the new view
             setupRoomCards();
@@ -294,13 +329,45 @@ function setupTabSystem() {
         miniGamesTab.addEventListener('click', () => {
             if (!isMuted) audio.playClick();
             
-            // Show unlock message
-            alert('🎮 Mini Games\n\nUnlocks at Level 80!\n\nKeep playing to reach this level and unlock exciting mini games!');
+            // Show modal popup
+            const miniGamesModal = document.getElementById('miniGamesModal');
+            if (miniGamesModal) {
+                miniGamesModal.classList.remove('hidden');
+            }
         });
     }
     
-    // Initialize - show arrows on default tab so user can navigate rooms
-    updateArrowVisibility(true);
+    // Mini Games Modal Close Buttons
+    const miniGamesModal = document.getElementById('miniGamesModal');
+    const miniGamesCloseBtn = document.getElementById('miniGamesCloseBtn');
+    const miniGamesOkBtn = document.getElementById('miniGamesOkBtn');
+    
+    if (miniGamesCloseBtn) {
+        miniGamesCloseBtn.addEventListener('click', () => {
+            if (!isMuted) audio.playClick();
+            miniGamesModal.classList.add('hidden');
+        });
+    }
+    
+    if (miniGamesOkBtn) {
+        miniGamesOkBtn.addEventListener('click', () => {
+            if (!isMuted) audio.playClick();
+            miniGamesModal.classList.add('hidden');
+        });
+    }
+    
+    // Close modal on overlay click
+    if (miniGamesModal) {
+        miniGamesModal.addEventListener('click', (e) => {
+            if (e.target === miniGamesModal) {
+                if (!isMuted) audio.playClick();
+                miniGamesModal.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Initialize - hide arrows on default tab (What's Hot has only 3 cards)
+    updateArrowVisibility(false);
 }
 
 /**
