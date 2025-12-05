@@ -22,48 +22,23 @@ An immersive AI-powered bingo experience combining classic bingo gameplay with A
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Python 3.8+
-- Node.js (optional, for serving)
-- Modern web browser
-
-### 1. Clone & Setup
-```bash
-git clone <your-repo-url>
-cd Orbella-Bingo
-```
-
-### 2. Backend Setup
+### 1. Setup Backend
 ```bash
 cd backend
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Configure environment
 cp .env.example .env
-# Edit .env with your API credentials
-
-# Start the server
-python main.py
+# Edit .env with your API keys
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload #use 8001 / 8002 / 8003 when in use
 ```
-Server runs on: `http://localhost:8000`
 
-### 3. Frontend Setup
+### 2. Setup Frontend
 ```bash
-cd frontend
-
-# Option A: Direct browser (simple)
-open index.html
-
-# Option B: Local server (recommended)
-python3 -m http.server 8080
-# Then open: http://localhost:8080
+cd frontend  
+python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-### 4. Play!
-- **Classic Mode**: Click "START GAME" for traditional bingo
-- **Orbella Room**: Enter themed AI-generated environments
+### 3. Play
+Open `http://localhost:8080` in your browser!
 
 ## 🏗️ Architecture
 
@@ -141,32 +116,9 @@ The backend integrates with Scenario API for:
 
 ## 🚨 Troubleshooting
 
-### Common Issues
-
-**Backend won't start:**
-- Check Python version (3.8+ required)
-- Verify all requirements installed: `pip install -r requirements.txt`
-- Ensure .env file exists with valid API keys
-
-**No AI content generated:**
-- Verify Scenario API credentials in .env
-- Check network connectivity
-- Review backend logs for API errors
-
-**Frontend display issues:**
-- Ensure backend is running on port 8000
-- Check browser console for CORS errors
-- Verify all files are served from same domain
-
-**No sound effects:**
-- Click anywhere on page to enable Web Audio
-- Check browser and system volume settings
-- Some browsers require HTTPS for audio
-
-### Performance Tips
-- Use local server instead of file:// protocol
-- Clear browser cache if assets don't update
-- Monitor backend logs for generation times
+- **Backend won't start**: Check `.env` file has your API keys
+- **No AI content**: Verify Scenario API credentials in `.env`
+- **Frontend issues**: Make sure backend is running on port 8000
 
 ## 🎮 Game Controls
 
